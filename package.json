@@ -28,11 +28,13 @@
     "check:types": "tsc --noEmit",
     "check:scripts": "oxlint",
     "check:format": "oxfmt",
+    "check:size": "pnpm run build && size-limit",
     "release": "bumpp",
     "prepublishOnly": "pnpm run build"
   },
   "devDependencies": {
     "@logux/oxc-configs": "^1.1.0",
+    "@size-limit/file": "^13.0.3",
     "@tsdown/css": "^0.22.14",
     "@types/node": "^26.1.1",
     "bumpp": "^11.1.0",
@@ -42,9 +44,20 @@
     "oxlint": "^1.80.0",
     "oxlint-tsgolint": "^7.0.2001",
     "playwright": "^1.62.1",
+    "size-limit": "^13.0.3",
     "tsdown": "^0.22.5",
     "typescript": "^7.0.2"
   },
+  "size-limit": [
+    {
+      "path": "dist/index.mjs",
+      "limit": "1 kB"
+    },
+    {
+      "path": "dist/ples.css",
+      "limit": "1 kB"
+    }
+  ],
   "engines": {
     "node": ">=26"
   },
