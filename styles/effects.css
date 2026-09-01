@@ -1,0 +1,76 @@
+/* Effects, ported from Ilya Birman's Emerge: https://github.com/ilyabirman/Emerge */
+
+[data-ples-effect='fade'] {
+  --ples-from: none;
+}
+
+[data-ples-effect='slide'] {
+  --ples-x: 0px;
+  --ples-y: 20px;
+  --ples-from: translate(var(--ples-x), var(--ples-y));
+  --ples-ease: cubic-bezier(0, 0.9, 0.1, 1);
+}
+
+[data-ples-effect='slide'][data-ples-left] {
+  --ples-x: 20px;
+}
+
+[data-ples-effect='slide'][data-ples-right] {
+  --ples-x: -20px;
+}
+
+[data-ples-effect='slide'][data-ples-down] {
+  --ples-y: -20px;
+}
+
+[data-ples-effect='relax'] {
+  --ples-from: scaleY(0.92);
+  --ples-ease: cubic-bezier(0, 0, 0.001, 1);
+  transform-origin: var(--ples-origin, top);
+}
+
+[data-ples-effect='zoom'] {
+  --ples-from: scale(0.5);
+  --ples-ease: cubic-bezier(0, 0.75, 0.25, 1);
+  transform-origin: var(--ples-origin, center center);
+}
+
+[data-ples-effect='screw'] {
+  --ples-from: scale(0.5) rotate(90deg);
+  --ples-ease: cubic-bezier(0, 0.75, 0.25, 1);
+  transform-origin: var(--ples-origin, center center);
+}
+
+@supports (transition-delay: attr(data-ples-hold type(<time>), 0ms)) {
+  [data-ples-effect='slide'] {
+    --ples-y: attr(data-ples-up type(<length>), 20px);
+  }
+
+  [data-ples-effect='slide'][data-ples-left] {
+    --ples-x: attr(data-ples-left type(<length>), 20px);
+  }
+
+  [data-ples-effect='slide'][data-ples-right] {
+    --ples-x: calc(-1 * attr(data-ples-right type(<length>), 20px));
+  }
+
+  [data-ples-effect='slide'][data-ples-down] {
+    --ples-y: calc(-1 * attr(data-ples-down type(<length>), 20px));
+  }
+
+  [data-ples-effect='relax'] {
+    --ples-from: scaleY(attr(data-ples-scale type(<number>), 0.92));
+    transform-origin: attr(data-ples-origin type(*), top);
+  }
+
+  [data-ples-effect='zoom'] {
+    --ples-from: scale(attr(data-ples-scale type(<number>), 0.5));
+    transform-origin: attr(data-ples-origin type(*), center center);
+  }
+
+  [data-ples-effect='screw'] {
+    --ples-from: scale(attr(data-ples-scale type(<number>), 0.5))
+      rotate(attr(data-ples-angle type(<angle>), 90deg));
+    transform-origin: attr(data-ples-origin type(*), center center);
+  }
+}

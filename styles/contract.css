@@ -1,0 +1,24 @@
+[data-ples] {
+  opacity: 1;
+  transform: none;
+}
+
+[data-ples-opaque] {
+  --ples-opacity: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ples [data-ples]:not(.ples-shown) {
+    opacity: var(--ples-opacity, 0);
+    transform: var(--ples-from, none);
+  }
+
+  /* No-JS fallback */
+
+  :root:not(.ples) [data-ples] {
+    @starting-style {
+      opacity: var(--ples-opacity, 0);
+      transform: var(--ples-from, none);
+    }
+  }
+}

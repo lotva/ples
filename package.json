@@ -18,7 +18,8 @@
   "type": "module",
   "exports": {
     ".": "./dist/index.mjs",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./ples.css": "./dist/ples.css"
   },
   "scripts": {
     "build": "tsdown",
@@ -32,9 +33,11 @@
   },
   "devDependencies": {
     "@logux/oxc-configs": "^1.1.0",
+    "@tsdown/css": "^0.22.14",
     "@types/node": "^26.1.1",
     "bumpp": "^11.1.0",
     "eslint-plugin-prefer-let": "^4.2.2",
+    "lightningcss": "^1.33.0",
     "oxfmt": "^0.65.0",
     "oxlint": "^1.80.0",
     "oxlint-tsgolint": "^7.0.2001",

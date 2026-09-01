@@ -1,0 +1,20 @@
+@media (prefers-reduced-motion: no-preference) {
+  :root:not(.ples) [data-ples],
+  .ples [data-ples],
+  [data-ples-stream] {
+    transition:
+      opacity var(--ples-duration, 500ms) var(--ples-ease, ease-out),
+      transform var(--ples-duration, 500ms) var(--ples-ease, ease-out);
+    transition-delay: var(--ples-hold, 0ms);
+  }
+
+  @supports (transition-delay: attr(data-ples-hold type(<time>), 0ms)) {
+    :root:not(.ples) [data-ples],
+    .ples [data-ples],
+    [data-ples-stream] {
+      transition-delay: attr(data-ples-hold type(<time>), 0ms);
+      transition-duration: attr(data-ples-duration type(<time>), 500ms);
+      transition-timing-function: attr(data-ples-ease type(*), ease-out);
+    }
+  }
+}

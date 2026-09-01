@@ -1,8 +1,17 @@
 import { defineConfig } from 'tsdown'
 
 export default defineConfig({
-  dts: {
-    tsgo: true
+  entry: {
+    index: 'src/index.ts',
+    ples: 'styles/ples.css',
   },
-  exports: true
+  dts: {
+    tsgo: true,
+  },
+  exports: true,
+  css: {
+    minify: true,
+    fileName: 'ples.css',
+    target: false,
+  },
 })
