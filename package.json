@@ -1,6 +1,6 @@
 {
   "name": "ples",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "A starter for creating a TypeScript package.",
   "homepage": "https://github.com/lotva/ples#readme",
   "bugs": {
@@ -26,6 +26,10 @@
       "types": "./dist/head.d.mts",
       "import": "./dist/head.mjs"
     },
+    "./astro": {
+      "types": "./dist/astro.d.mts",
+      "import": "./dist/astro.mjs"
+    },
     "./runtime": "./dist/runtime.iife.js",
     "./styles": "./dist/ples.css"
   },
@@ -46,6 +50,7 @@
     "@size-limit/file": "^13.0.3",
     "@tsdown/css": "^0.22.14",
     "@types/node": "^26.1.1",
+    "astro": "^7.2.10",
     "bumpp": "^11.1.0",
     "eslint-plugin-prefer-let": "^4.2.2",
     "lightningcss": "^1.33.0",
@@ -56,6 +61,14 @@
     "size-limit": "^13.0.3",
     "tsdown": "^0.22.5",
     "typescript": "^7.0.2"
+  },
+  "peerDependencies": {
+    "astro": ">=4.0.0"
+  },
+  "peerDependenciesMeta": {
+    "astro": {
+      "optional": true
+    }
   },
   "size-limit": [
     {

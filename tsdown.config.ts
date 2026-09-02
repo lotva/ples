@@ -23,5 +23,13 @@ export default defineConfig([
     hooks: {
       'build:done': scheduleBuildHead
     }
+  },
+  {
+    entry: { astro: 'src/astro.ts' },
+    dts: true,
+    platform: 'node',
+    deps: {
+      neverBundle: ['astro', './head.mjs']
+    }
   }
 ])
