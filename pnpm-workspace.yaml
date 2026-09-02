@@ -1,2 +1,6 @@
+packages:
+  - '.'
+  - 'fixtures/*'
+
 allowBuilds:
   esbuild: true

@@ -36,7 +36,10 @@
   "scripts": {
     "build": "tsdown",
     "dev": "tsdown --watch",
-    "test": "playwright test",
+    "test": "pnpm run test:browser && pnpm run test:integrations",
+    "test:browser": "playwright test",
+    "test:integrations": "pnpm run test:integrations:build && node --test tests/*.integration.mjs",
+    "test:integrations:build": "pnpm run build && pnpm --dir fixtures/astro run build",
     "check:types": "tsc --noEmit",
     "check:scripts": "oxlint",
     "check:format": "oxfmt",

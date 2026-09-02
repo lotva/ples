@@ -3,6 +3,7 @@ import { defineConfig } from 'oxlint'
 
 export default defineConfig({
   extends: [loguxOxlintConfig],
+  ignorePatterns: ['fixtures/**', 'playwright.config.ts'],
   env: {
     browser: true
   }

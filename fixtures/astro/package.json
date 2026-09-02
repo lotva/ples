@@ -1,0 +1,12 @@
+{
+  "name": "ples-astro-fixture",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "astro build"
+  },
+  "dependencies": {
+    "astro": "^7.2.10",
+    "ples": "workspace:*"
+  }
+}

@@ -4,3 +4,6 @@ dist
 .DS_Store
 .pnpm-store
 test-results
+
+fixtures/astro/dist
+fixtures/astro/.astro
