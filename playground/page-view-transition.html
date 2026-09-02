@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>ples playground — view-transition</title>
+    <script src="/runtime.iife.js"></script>
+    <link rel="stylesheet" href="/ples.css" />
+    <style>
+      @view-transition {
+        navigation: auto;
+      }
+      body {
+        font-family: system-ui, sans-serif;
+        max-width: 32rem;
+        margin: 4rem auto;
+        padding: 0 1rem;
+      }
+      section {
+        margin-block-end: 3rem;
+      }
+      nav a {
+        margin-inline-end: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a href="index.html">page one</a>
+      <a href="page-two.html">page two</a>
+      <a href="page-config-disabled.html">page config-disabled</a>
+      <a href="page-markup-disabled.html">page markup-disabled</a>
+      <a href="page-reload-disabled.html">page reload-disabled</a>
+      <a href="page-view-transition.html">page view-transition</a>
+    </nav>
+
+    <!--
+			Both this page and index.html declare
+			@view-transition { navigation: auto } — cross-document View
+			Transitions only activate when both sides of a navigation opt
+			in, so arriving here (but not at page-two.html or
+			page-config-disabled.html, neither of which opt in) is the one
+			navigation in this playground where the browser is genuinely
+			running its own crossfade underneath whatever ples decides to
+			do.
+		-->
+    <section id="under-view-transition" data-ples data-ples-effect="slide">
+      <h1>Arrived under a real View Transition</h1>
+      <p>
+        Revealed instantly, deferring to the page's own crossfade instead of
+        animating on top of it.
+      </p>
+    </section>
+  </body>
+</html>

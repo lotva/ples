@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>ples playground</title>
+    <script src="/runtime.iife.js"></script>
+    <link rel="stylesheet" href="/ples.css" />
+    <style>
+      @view-transition {
+        navigation: auto;
+      }
+      body {
+        font-family: system-ui, sans-serif;
+        max-width: 32rem;
+        margin: 4rem auto;
+        padding: 0 1rem;
+      }
+      section {
+        margin-block-end: 3rem;
+      }
+      nav a {
+        margin-inline-end: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a href="index.html">page one</a>
+      <a href="page-two.html">page two</a>
+      <a href="page-config-disabled.html">page config-disabled</a>
+      <a href="page-markup-disabled.html">page markup-disabled</a>
+      <a href="page-reload-disabled.html">page reload-disabled</a>
+      <a href="page-view-transition.html">page view-transition</a>
+    </nav>
+
+    <section id="fresh" data-ples data-ples-effect="slide">
+      <h1>Fresh visit</h1>
+      <p>This section always plays its reveal on a fresh visit.</p>
+    </section>
+
+    <section
+      id="zoom-held"
+      data-ples
+      data-ples-effect="zoom"
+      data-ples-hold="200ms"
+    >
+      <h1>Zoom, held 200ms</h1>
+      <p>Effect and timing set entirely from markup.</p>
+    </section>
+
+    <section
+      id="style-duration"
+      data-ples
+      data-ples-effect="slide"
+      data-ples-left="24px"
+      style="--ples-duration: 1200ms"
+    >
+      <h1>Duration via style=""</h1>
+      <p>Same custom property, set by hand instead of a data attribute.</p>
+    </section>
+
+    <section
+      id="opted-in-fresh"
+      data-ples
+      data-ples-navigate
+      data-ples-effect="relax"
+    >
+      <h1>Explicit data-ples-navigate</h1>
+      <p>
+        Redundant here — animating on a fresh visit is already the default — but
+        valid markup, worth one fixture that uses it.
+      </p>
+    </section>
+  </body>
+</html>
