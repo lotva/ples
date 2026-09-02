@@ -1,11 +1,16 @@
 import { defineConfig } from 'tsdown'
 
+import { scheduleBuildHead } from './scripts/build-head.mjs'
+
 export default defineConfig([
   {
     entry: { runtime: 'src/runtime.ts' },
     format: 'iife',
     minify: true,
     dts: false,
+    hooks: {
+      'build:done': scheduleBuildHead
+    }
   },
   {
     entry: { ples: 'styles/ples.css' },
@@ -13,7 +18,10 @@ export default defineConfig([
     css: {
       minify: true,
       fileName: 'ples.css',
-      target: false,
+      target: false
     },
-  },
+    hooks: {
+      'build:done': scheduleBuildHead
+    }
+  }
 ])
