@@ -39,5 +39,13 @@ export default defineConfig([
     deps: {
       neverBundle: ['./head.mjs']
     }
+  },
+  {
+    entry: { vite: 'src/integrations/vite.ts' },
+    dts: true,
+    platform: 'node',
+    deps: {
+      neverBundle: ['vite', './head.mjs']
+    }
   }
 ])

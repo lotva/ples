@@ -8,3 +8,4 @@ test-results
 fixtures/astro/dist
 fixtures/astro/.astro
 fixtures/eleventy/dist
+fixtures/vite/dist

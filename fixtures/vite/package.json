@@ -1,0 +1,12 @@
+{
+  "name": "ples-vite-fixture",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "vite build"
+  },
+  "dependencies": {
+    "ples": "workspace:*",
+    "vite": "^8.2.2"
+  }
+}

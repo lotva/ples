@@ -1,6 +1,6 @@
 {
   "name": "ples",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "A starter for creating a TypeScript package.",
   "homepage": "https://github.com/lotva/ples#readme",
   "bugs": {
@@ -34,6 +34,10 @@
       "types": "./dist/eleventy.d.mts",
       "import": "./dist/eleventy.mjs"
     },
+    "./vite": {
+      "types": "./dist/vite.d.mts",
+      "import": "./dist/vite.mjs"
+    },
     "./runtime": "./dist/runtime.iife.js",
     "./styles": "./dist/ples.css"
   },
@@ -43,7 +47,7 @@
     "test": "pnpm run test:browser && pnpm run test:integrations",
     "test:browser": "playwright test",
     "test:integrations": "pnpm run test:integrations:build && node --test tests/*.integration.mjs",
-    "test:integrations:build": "pnpm run build && pnpm --dir fixtures/astro run build && pnpm --dir fixtures/eleventy run build",
+    "test:integrations:build": "pnpm run build && pnpm --dir fixtures/astro run build && pnpm --dir fixtures/eleventy run build && pnpm --dir fixtures/vite run build",
     "check:types": "tsc --noEmit",
     "check:scripts": "oxlint",
     "check:format": "oxfmt",
@@ -67,17 +71,22 @@
     "playwright": "^1.62.1",
     "size-limit": "^13.0.3",
     "tsdown": "^0.22.5",
-    "typescript": "^7.0.2"
+    "typescript": "^7.0.2",
+    "vite": "^8.2.2"
   },
   "peerDependencies": {
     "@11ty/eleventy": ">=3.0.0",
-    "astro": ">=4.0.0"
+    "astro": ">=4.0.0",
+    "vite": ">=5.0.0"
   },
   "peerDependenciesMeta": {
     "@11ty/eleventy": {
       "optional": true
     },
     "astro": {
+      "optional": true
+    },
+    "vite": {
       "optional": true
     }
   },
