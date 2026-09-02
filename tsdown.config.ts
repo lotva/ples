@@ -1,17 +1,19 @@
 import { defineConfig } from 'tsdown'
 
-export default defineConfig({
-  entry: {
-    index: 'src/index.ts',
-    ples: 'styles/ples.css',
-  },
-  dts: {
-    tsgo: true,
-  },
-  exports: true,
-  css: {
+export default defineConfig([
+  {
+    entry: { runtime: 'src/runtime.ts' },
+    format: 'iife',
     minify: true,
-    fileName: 'ples.css',
-    target: false,
+    dts: false,
   },
-})
+  {
+    entry: { ples: 'styles/ples.css' },
+    dts: false,
+    css: {
+      minify: true,
+      fileName: 'ples.css',
+      target: false,
+    },
+  },
+])

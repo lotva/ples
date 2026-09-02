@@ -17,10 +17,14 @@
   ],
   "type": "module",
   "exports": {
-    ".": "./dist/index.mjs",
     "./package.json": "./package.json",
-    "./ples.css": "./dist/ples.css"
+    "./runtime": "./dist/runtime.iife.js",
+    "./styles": "./dist/ples.css"
   },
+  "sideEffects": [
+    "./dist/runtime.iife.js",
+    "./dist/ples.css"
+  ],
   "scripts": {
     "build": "tsdown",
     "dev": "tsdown --watch",
@@ -50,7 +54,7 @@
   },
   "size-limit": [
     {
-      "path": "dist/index.mjs",
+      "path": "dist/runtime.iife.js",
       "limit": "1 kB"
     },
     {
