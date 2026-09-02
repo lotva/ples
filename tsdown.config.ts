@@ -25,11 +25,19 @@ export default defineConfig([
     }
   },
   {
-    entry: { astro: 'src/astro.ts' },
+    entry: { astro: 'src/integrations/astro.ts' },
     dts: true,
     platform: 'node',
     deps: {
       neverBundle: ['astro', './head.mjs']
+    }
+  },
+  {
+    entry: { eleventy: 'src/integrations/eleventy.ts' },
+    dts: true,
+    platform: 'node',
+    deps: {
+      neverBundle: ['./head.mjs']
     }
   }
 ])

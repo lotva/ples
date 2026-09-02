@@ -1,0 +1,12 @@
+{
+  "name": "ples-eleventy-fixture",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "eleventy"
+  },
+  "dependencies": {
+    "@11ty/eleventy": "^3.1.6",
+    "ples": "workspace:*"
+  }
+}

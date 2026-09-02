@@ -7,3 +7,4 @@ test-results
 
 fixtures/astro/dist
 fixtures/astro/.astro
+fixtures/eleventy/dist
