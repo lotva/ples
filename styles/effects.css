@@ -32,13 +32,13 @@
 [data-ples-effect='zoom'] {
   --ples-from: scale(0.5);
   --ples-ease: cubic-bezier(0, 0.75, 0.25, 1);
-  transform-origin: var(--ples-origin, center center);
+  transform-origin: var(--ples-origin, center);
 }
 
 [data-ples-effect='screw'] {
   --ples-from: scale(0.5) rotate(90deg);
   --ples-ease: cubic-bezier(0, 0.75, 0.25, 1);
-  transform-origin: var(--ples-origin, center center);
+  transform-origin: var(--ples-origin, center);
 }
 
 @supports (transition-delay: attr(data-ples-hold type(<time>), 0ms)) {
@@ -65,12 +65,12 @@
 
   [data-ples-effect='zoom'] {
     --ples-from: scale(attr(data-ples-scale type(<number>), 0.5));
-    transform-origin: attr(data-ples-origin type(*), center center);
+    transform-origin: attr(data-ples-origin type(*), center);
   }
 
   [data-ples-effect='screw'] {
     --ples-from: scale(attr(data-ples-scale type(<number>), 0.5))
       rotate(attr(data-ples-angle type(<angle>), 90deg));
-    transform-origin: attr(data-ples-origin type(*), center center);
+    transform-origin: attr(data-ples-origin type(*), center);
   }
 }

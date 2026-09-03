@@ -8,8 +8,8 @@ const SELECTOR = '[data-ples]'
 const SHOWN_CLASS = 'ples-shown'
 const STREAM_ATTRIBUTE = 'data-ples-stream'
 
-function candidates(): HTMLElement[] {
-  return [...document.querySelectorAll<HTMLElement>(SELECTOR)]
+function candidates(): NodeListOf<HTMLElement> {
+  return document.querySelectorAll<HTMLElement>(SELECTOR)
 }
 
 function markShown(elements: Iterable<HTMLElement>): void {
@@ -25,7 +25,7 @@ function show(elements: Iterable<HTMLElement>): void {
   enableStreamMode()
 }
 
-function play(elements: HTMLElement[]): void {
+function play(elements: ArrayLike<HTMLElement> & Iterable<HTMLElement>): void {
   if (elements.length === 0) {
     enableStreamMode()
     return
@@ -38,7 +38,7 @@ function play(elements: HTMLElement[]): void {
   )
 }
 
-function partition(elements: HTMLElement[]): {
+function partition(elements: Iterable<HTMLElement>): {
   animate: HTMLElement[]
   instant: HTMLElement[]
 } {

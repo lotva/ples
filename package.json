@@ -1,6 +1,6 @@
 {
   "name": "ples",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "A starter for creating a TypeScript package.",
   "homepage": "https://github.com/lotva/ples#readme",
   "bugs": {
@@ -93,11 +93,11 @@
   "size-limit": [
     {
       "path": "dist/runtime.iife.js",
-      "limit": "1 kB"
+      "limit": "500 B"
     },
     {
       "path": "dist/ples.css",
-      "limit": "1 kB"
+      "limit": "750 B"
     }
   ],
   "engines": {
