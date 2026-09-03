@@ -28,6 +28,7 @@ const STREAMED_CHUNK = `
 
 function asset(pathname) {
   if (pathname === '/ples.css') return join(DIST, 'ples.css')
+  if (pathname === '/scroll.css') return join(DIST, 'scroll.css')
   if (pathname === '/runtime.iife.js') return join(DIST, 'runtime.iife.js')
   return join(PLAYGROUND, pathname)
 }

@@ -1,6 +1,10 @@
 import type { HtmlTagDescriptor, Plugin } from 'vite'
 
-export default function ples(): Plugin {
+import { stylesheet, type PlesOptions } from './options.js'
+
+export type { PlesOptions }
+
+export default function ples(options?: PlesOptions): Plugin {
   let head = import('./head.mjs')
 
   return {
@@ -8,7 +12,7 @@ export default function ples(): Plugin {
     transformIndexHtml: {
       order: 'pre',
       async handler(html) {
-        let { script, style } = await head
+        let { script, style, scroll } = await head
 
         if (html.includes(script)) {
           return
@@ -17,7 +21,7 @@ export default function ples(): Plugin {
         let tags: HtmlTagDescriptor[] = [
           {
             tag: 'style',
-            children: style,
+            children: stylesheet(style, scroll, options),
             injectTo: 'head'
           },
           {

@@ -1,6 +1,6 @@
 {
   "name": "ples",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "description": "A starter for creating a TypeScript package.",
   "homepage": "https://github.com/lotva/ples#readme",
   "bugs": {
@@ -18,7 +18,8 @@
   "type": "module",
   "sideEffects": [
     "./dist/runtime.iife.js",
-    "./dist/ples.css"
+    "./dist/ples.css",
+    "./dist/scroll.css"
   ],
   "exports": {
     "./package.json": "./package.json",
@@ -39,7 +40,8 @@
       "import": "./dist/vite.mjs"
     },
     "./runtime": "./dist/runtime.iife.js",
-    "./styles": "./dist/ples.css"
+    "./styles": "./dist/ples.css",
+    "./scroll": "./dist/scroll.css"
   },
   "scripts": {
     "build": "tsdown",
@@ -98,6 +100,10 @@
     {
       "path": "dist/ples.css",
       "limit": "750 B"
+    },
+    {
+      "path": "dist/scroll.css",
+      "limit": "400 B"
     }
   ],
   "engines": {

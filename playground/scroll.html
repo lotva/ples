@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>ples scroll</title>
+    <script src="/runtime.iife.js"></script>
+    <link rel="stylesheet" href="/ples.css" />
+    <link rel="stylesheet" href="/scroll.css" />
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        max-width: 32rem;
+        margin: 4rem auto;
+        padding: 0 1rem;
+      }
+      section {
+        margin-block-end: 3rem;
+      }
+      .spacer {
+        height: 120vh;
+      }
+    </style>
+  </head>
+  <body>
+    <section id="fresh" data-ples data-ples-effect="slide">
+      <h1>Above the fold</h1>
+      <p>Reveals on pagereveal, not on scroll.</p>
+    </section>
+
+    <div class="spacer" id="spacer-top"></div>
+
+    <section id="expose" data-ples data-ples-scroll data-ples-effect="slide">
+      <h1>Expose default</h1>
+      <p>Waits until the block is fully contained in the viewport.</p>
+    </section>
+
+    <div class="spacer" id="spacer-mid"></div>
+
+    <section
+      id="expose-mid"
+      data-ples
+      data-ples-scroll="50%"
+      data-ples-effect="slide"
+    >
+      <h1>Expose 50%</h1>
+      <p>Fires halfway through the entry range.</p>
+    </section>
+
+    <div class="spacer" id="spacer-bottom"></div>
+  </body>
+</html>

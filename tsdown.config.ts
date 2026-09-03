@@ -13,11 +13,14 @@ export default defineConfig([
     }
   },
   {
-    entry: { ples: 'styles/ples.css' },
+    entry: {
+      ples: 'styles/ples.css',
+      scroll: 'styles/scroll.css'
+    },
     dts: false,
     css: {
       minify: true,
-      fileName: 'ples.css',
+      splitting: true,
       target: false
     },
     hooks: {

@@ -41,4 +41,9 @@ test('astro integration injects styles and runtime inside head', () => {
   let runtimeMatches =
     html.match(/addEventListener\([`'"]pagereveal[`'"]/g) ?? []
   assert.equal(runtimeMatches.length, 1, 'runtime is present once')
+  assert.doesNotMatch(
+    html,
+    /timeline-trigger/,
+    'scroll CSS is not imported unless the plugin option is set'
+  )
 })

@@ -1,0 +1,35 @@
+@media (prefers-reduced-motion: no-preference) {
+  @supports (timeline-trigger: --ples-scroll view()) and
+    (trigger-scope: --ples-scroll) {
+    @keyframes ples-reveal {
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    .ples [data-ples-scroll],
+    .ples[data-ples-stream] [data-ples-scroll] {
+      opacity: var(--ples-opacity, 0);
+      transform: var(--ples-from, none);
+      transition: none;
+      animation: ples-reveal var(--ples-duration, 500ms)
+        var(--ples-ease, ease-out) forwards;
+      animation-delay: var(--ples-hold, 0ms);
+      trigger-scope: --ples-scroll;
+      timeline-trigger: --ples-scroll view() contain;
+      animation-trigger: --ples-scroll play-once;
+    }
+
+    @supports (animation-delay: attr(data-ples-hold type(<time>), 0ms)) {
+      .ples [data-ples-scroll],
+      .ples[data-ples-stream] [data-ples-scroll] {
+        animation-delay: attr(data-ples-hold type(<time>), 0ms);
+        animation-duration: attr(data-ples-duration type(<time>), 500ms);
+        animation-timing-function: attr(data-ples-ease type(*), ease-out);
+        timeline-trigger: --ples-scroll view() entry
+          attr(data-ples-scroll type(<percentage>), 100%) exit 0%;
+      }
+    }
+  }
+}
