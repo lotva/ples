@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>ples sequence</title>
+    <script src="/runtime.iife.js"></script>
+    <link rel="stylesheet" href="/ples.css" />
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        max-width: 32rem;
+        margin: 4rem auto;
+        padding: 0 1rem;
+      }
+      section {
+        margin-block-end: 3rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="default" data-ples-sequence>
+      <section id="default-a" data-ples data-ples-effect="slide">
+        <h1>Default A</h1>
+      </section>
+      <section id="default-b" data-ples data-ples-effect="slide">
+        <h1>Default B</h1>
+      </section>
+      <section id="default-c" data-ples data-ples-effect="slide">
+        <h1>Default C</h1>
+      </section>
+    </div>
+
+    <div id="custom" data-ples-sequence="80ms">
+      <section id="custom-a" data-ples data-ples-effect="slide">
+        <h1>Custom A</h1>
+      </section>
+      <section id="custom-b" data-ples data-ples-effect="slide">
+        <h1>Custom B</h1>
+      </section>
+      <section id="custom-c" data-ples data-ples-effect="slide">
+        <h1>Custom C</h1>
+      </section>
+    </div>
+
+    <div id="index" data-ples-sequence>
+      <section id="index-a" data-ples data-ples-effect="slide">
+        <h1>Index A</h1>
+      </section>
+      <section
+        id="index-b"
+        data-ples
+        data-ples-effect="slide"
+        style="--ples-stagger-index: 0"
+      >
+        <h1>Index B, no stagger</h1>
+      </section>
+      <section id="index-c" data-ples data-ples-effect="slide">
+        <h1>Index C</h1>
+      </section>
+    </div>
+  </body>
+</html>
