@@ -13,9 +13,13 @@
     transform: var(--ples-from, none);
   }
 
-  /* No-JS fallback */
+  /* No-JS fallback; animate streamed and SPA inserts */
 
-  :root:not(.ples) [data-ples] {
+  :root:not(.ples) [data-ples],
+  .ples[data-ples-stream] [data-ples] {
+    opacity: 1;
+    transform: none;
+
     @starting-style {
       opacity: var(--ples-opacity, 0);
       transform: var(--ples-from, none);

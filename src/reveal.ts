@@ -6,17 +6,31 @@ import {
 
 const SELECTOR = '[data-ples]'
 const SHOWN_CLASS = 'ples-shown'
+const STREAM_ATTRIBUTE = 'data-ples-stream'
 
 function candidates(): HTMLElement[] {
   return [...document.querySelectorAll<HTMLElement>(SELECTOR)]
 }
 
-function show(elements: Iterable<HTMLElement>): void {
+function markShown(elements: Iterable<HTMLElement>): void {
   for (let element of elements) element.classList.add(SHOWN_CLASS)
 }
 
+function enableStreamMode(): void {
+  document.documentElement.setAttribute(STREAM_ATTRIBUTE, '')
+}
+
+function show(elements: Iterable<HTMLElement>): void {
+  markShown(elements)
+  enableStreamMode()
+}
+
 function play(elements: HTMLElement[]): void {
-  if (elements.length === 0) return
+  if (elements.length === 0) {
+    enableStreamMode()
+    return
+  }
+
   requestAnimationFrame(() =>
     requestAnimationFrame(() => {
       show(elements)
@@ -63,7 +77,7 @@ export function listen(): void {
       }
 
       let { animate, instant } = partition(elements)
-      show(instant)
+      markShown(instant)
       play(animate)
     } catch {
       show(elements)

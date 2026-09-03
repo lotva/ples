@@ -11,11 +11,11 @@ A tiny, CSS-first library for coordinating reveal animations across page loads a
 
 **Supports modern navigation APIs.** Works with View Transitions and Speculation Rules prerender: does not play under a crossfade, waits until the prerendered page is actually visited.
 
-**MPA first.** Built for document loads.
+**MPA first.** Built for document loads. Streamed HTML and client-side mounts still reveal.
 
 **Small.** No dependencies.
 
-[Guarantees](#guarantees) · [Install](#install) · [Setup](#setup) · [Basic usage](#basic-usage) · [Browser support](#browser-support) · [Extra effects](#extra-effects) · [Reloads and in-app navigation](#reloads-and-in-app-navigation)
+[Guarantees](#guarantees) · [Install](#install) · [Setup](#setup) · [Basic usage](#basic-usage) · [Browser support](#browser-support) · [Extra effects](#extra-effects) · [Reloads and in-app navigation](#reloads-and-in-app-navigation) · [Streaming and SPA](#streaming-and-spa)
 
 ## Guarantees
 
@@ -212,3 +212,19 @@ Skip on in-app navigation. On a block, only that block skips. On `<html>`, every
 
 `data-ples-reload="false"`\
 On `<html>`: skip the animation on reload.
+
+## Streaming and SPA
+
+HTML that arrives after the first reveal — a streamed chunk, or a node a script mounts — still uses `[data-ples]`. Those nodes animate when the browser first styles them.
+
+```html
+<div data-ples data-ples-effect="slide">Streamed or mounted later</div>
+```
+
+What does not carry over to those late nodes:
+
+- `data-ples-navigate` / `data-ples-reload` have no effect.
+- A client route change only replays if the node is actually new. Patching in place does not replay.
+- If the app also runs a View Transition for that insert, Ples cannot see it. That can double-animate; test it.
+
+Ples coordinates how a document appears, not how a component mounts in a client router.

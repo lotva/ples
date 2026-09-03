@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>ples spa</title>
+    <script src="/runtime.iife.js"></script>
+    <link rel="stylesheet" href="/ples.css" />
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        max-width: 32rem;
+        margin: 4rem auto;
+        padding: 0 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <section id="ssr" data-ples data-ples-effect="slide">
+        <h1>SSR route</h1>
+        <p>Revealed by the runtime after pagereveal.</p>
+      </section>
+    </div>
+    <script>
+      function insertClientRoute() {
+        let section = document.createElement('section')
+        section.id = 'spa'
+        section.setAttribute('data-ples', '')
+        section.setAttribute('data-ples-effect', 'slide')
+        section.innerHTML =
+          '<h1>Client route</h1><p>Revealed by @starting-style after stream mode.</p>'
+        document.getElementById('app').append(section)
+      }
+
+      function waitForStreamMode() {
+        if (document.documentElement.hasAttribute('data-ples-stream')) {
+          insertClientRoute()
+          return
+        }
+
+        let observer = new MutationObserver(() => {
+          if (document.documentElement.hasAttribute('data-ples-stream')) {
+            observer.disconnect()
+            insertClientRoute()
+          }
+        })
+        observer.observe(document.documentElement, {
+          attributes: true,
+          attributeFilter: ['data-ples-stream']
+        })
+      }
+
+      waitForStreamMode()
+    </script>
+  </body>
+</html>

@@ -1,12 +1,17 @@
 import { readFileSync, existsSync } from 'node:fs'
 import { createServer } from 'node:http'
 import { extname, join } from 'node:path'
+import { Readable } from 'node:stream'
+import { pipeline } from 'node:stream/promises'
 import { fileURLToPath } from 'node:url'
+import { setTimeout as delay } from 'node:timers/promises'
 
 const ROOT = fileURLToPath(new URL('../', import.meta.url))
 const PLAYGROUND = join(ROOT, 'playground')
 const DIST = join(ROOT, 'dist')
 const PORT = 4173
+const STREAM_DELAY_MS = 250
+const ENCODER = new TextEncoder()
 
 const MIME = {
   '.css': 'text/css; charset=utf-8',
@@ -14,13 +19,31 @@ const MIME = {
   '.js': 'text/javascript; charset=utf-8'
 }
 
+const STREAMED_CHUNK = `
+    <section id="streamed" data-ples data-ples-effect="slide">
+      <h1>Streamed chunk</h1>
+      <p>Arrived after pagereveal; revealed by @starting-style.</p>
+    </section>
+`
+
 function asset(pathname) {
   if (pathname === '/ples.css') return join(DIST, 'ples.css')
   if (pathname === '/runtime.iife.js') return join(DIST, 'runtime.iife.js')
   return join(PLAYGROUND, pathname)
 }
 
-createServer((request, response) => {
+function streamPage(before, after) {
+  return new ReadableStream({
+    async start(controller) {
+      controller.enqueue(ENCODER.encode(before))
+      await delay(STREAM_DELAY_MS)
+      controller.enqueue(ENCODER.encode(`${STREAMED_CHUNK}${after}`))
+      controller.close()
+    }
+  })
+}
+
+createServer(async (request, response) => {
   let pathname = request.url?.split('?')[0] ?? '/'
   if (pathname === '/') pathname = '/index.html'
 
@@ -31,8 +54,17 @@ createServer((request, response) => {
     return
   }
 
-  response.writeHead(200, {
-    'Content-Type': MIME[extname(file)] ?? 'application/octet-stream'
-  })
+  let type = MIME[extname(file)] ?? 'application/octet-stream'
+
+  if (pathname === '/stream.html') {
+    let html = readFileSync(file, 'utf8')
+    let [before, after = ''] = html.split('<!--STREAM-->')
+
+    response.writeHead(200, { 'Content-Type': type })
+    await pipeline(Readable.fromWeb(streamPage(before, after)), response)
+    return
+  }
+
+  response.writeHead(200, { 'Content-Type': type })
   response.end(readFileSync(file))
 }).listen(PORT)
