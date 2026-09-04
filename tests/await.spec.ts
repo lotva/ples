@@ -30,11 +30,18 @@ test.describe('ples/await', () => {
     await expect(page.locator('#clip')).toHaveCSS('opacity', '1')
   })
 
-  test('does not wait for loading=lazy images', async ({ page }) => {
+  test('waits for loading=lazy images to decode', async ({ page }) => {
     await page.goto('/await.html', { waitUntil: 'domcontentloaded' })
 
-    await expect(page.locator('#lazy')).toHaveClass(/ples-ready/)
+    await expect(page.locator('#lazy')).not.toHaveClass(/ples-ready/)
     await expect(page.locator('#photo')).not.toHaveClass(/ples-ready/)
+
+    await page.locator('#lazy').scrollIntoViewIfNeeded()
+
+    await expect(page.locator('#lazy')).toHaveClass(/ples-ready/, {
+      timeout: 3000
+    })
+    await expect(page.locator('#lazy')).toHaveCSS('opacity', '1')
   })
 
   test('does not wait for preload=none videos', async ({ page }) => {

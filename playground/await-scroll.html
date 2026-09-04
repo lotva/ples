@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>ples await + scroll</title>
+    <script src="/runtime.iife.js"></script>
+    <script src="/await.iife.js"></script>
+    <link rel="stylesheet" href="/ples.css" />
+    <link rel="stylesheet" href="/scroll.css" />
+    <link rel="stylesheet" href="/await.css" />
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        max-width: 32rem;
+        margin: 4rem auto;
+        padding: 0 1rem;
+      }
+      section {
+        margin-block-end: 3rem;
+      }
+      .spacer {
+        height: 120vh;
+      }
+      img {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <section id="fresh" data-ples data-ples-effect="slide">
+      <h1>Above the fold</h1>
+      <p>Reveals on pagereveal. The lazy card waits below.</p>
+    </section>
+
+    <div class="spacer" id="spacer"></div>
+
+    <section id="card" data-ples data-ples-scroll data-ples-effect="slide">
+      <h1>Lazy card</h1>
+      <img
+        src="/slow.png?lazy-scroll"
+        width="100"
+        height="100"
+        alt=""
+        loading="lazy"
+      />
+    </section>
+  </body>
+</html>

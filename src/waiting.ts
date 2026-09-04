@@ -5,8 +5,16 @@ let jobs = new WeakMap<Element, Promise<void>>()
 let ok = Promise.resolve()
 
 function imageReady(image: HTMLImageElement): Promise<void> {
-  if (image.loading === 'lazy' && !image.complete) return Promise.resolve()
-  return image.decode().catch(() => {})
+  let decoded = (): Promise<void> => image.decode().catch(() => {})
+  if (image.complete) return decoded()
+
+  return new Promise<void>(resolve => {
+    let done: EventListener = () => {
+      resolve()
+    }
+    image.addEventListener('load', done, { once: true })
+    image.addEventListener('error', done, { once: true })
+  }).then(decoded)
 }
 
 function videoReady(video: HTMLVideoElement): Promise<void> {
@@ -19,7 +27,7 @@ function videoReady(video: HTMLVideoElement): Promise<void> {
       resolve()
     }
 
-    for (let type of ['loadeddata', 'error', 'suspend'] as const) {
+    for (let type of ['loadeddata', 'error'] as const) {
       video.addEventListener(type, done, { once: true })
     }
   })
