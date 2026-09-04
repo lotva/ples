@@ -13,10 +13,20 @@ export default defineConfig([
     }
   },
   {
+    entry: { await: 'src/waiting.ts' },
+    format: 'iife',
+    minify: true,
+    dts: false,
+    hooks: {
+      'build:done': scheduleBuildHead
+    }
+  },
+  {
     entry: {
       ples: 'styles/ples.css',
       scroll: 'styles/scroll.css',
-      sequence: 'styles/sequence.css'
+      sequence: 'styles/sequence.css',
+      await: 'styles/await.css'
     },
     dts: false,
     css: {

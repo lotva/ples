@@ -1,7 +1,7 @@
 import type UserConfig from '@11ty/eleventy/UserConfig'
 import type { PosthtmlElement, PosthtmlTree } from '@11ty/eleventy/UserConfig'
 
-import { stylesheet, type PlesOptions } from './options.js'
+import { scripts, stylesheet, type PlesOptions } from './options.js'
 
 export type { PlesOptions }
 
@@ -54,12 +54,13 @@ export default function ples(
   eleventyConfig.htmlTransformer.addPosthtmlPlugin(
     'html',
     () => async tree => {
-      let { script, style, scroll, sequence } = await head
+      let { script, awaitScript, style, scroll, sequence, awaitStyle } =
+        await head
 
       return injectAssets(
         tree,
-        stylesheet({ style, scroll, sequence }, options),
-        script
+        stylesheet({ style, scroll, sequence, awaitStyle }, options),
+        scripts(script, awaitScript, options)
       )
     },
     { name: 'ples' }

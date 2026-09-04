@@ -48,4 +48,9 @@ test('vite plugin injects styles and runtime inside head', () => {
     /sibling-index/,
     'sequence CSS is not injected unless the plugin option is set'
   )
+  assert.doesNotMatch(
+    html,
+    /ples-ready/,
+    'await CSS is not injected unless the plugin option is set'
+  )
 })

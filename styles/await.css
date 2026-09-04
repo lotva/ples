@@ -1,0 +1,8 @@
+@media (prefers-reduced-motion: no-preference) {
+  .ples [data-ples]:not(.ples-ready),
+  .ples[data-ples-stream] [data-ples]:not(.ples-ready) {
+    opacity: var(--ples-opacity, 0);
+    transform: var(--ples-from, none);
+    transition: none;
+  }
+}

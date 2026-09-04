@@ -11,6 +11,11 @@ const PLAYGROUND = join(ROOT, 'playground')
 const DIST = join(ROOT, 'dist')
 const PORT = 4173
 const STREAM_DELAY_MS = 250
+const SLOW_IMAGE_MS = 400
+const PIXEL = Buffer.from(
+  'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==',
+  'base64'
+)
 const ENCODER = new TextEncoder()
 
 const MIME = {
@@ -30,7 +35,9 @@ function asset(pathname) {
   if (pathname === '/ples.css') return join(DIST, 'ples.css')
   if (pathname === '/scroll.css') return join(DIST, 'scroll.css')
   if (pathname === '/sequence.css') return join(DIST, 'sequence.css')
+  if (pathname === '/await.css') return join(DIST, 'await.css')
   if (pathname === '/runtime.iife.js') return join(DIST, 'runtime.iife.js')
+  if (pathname === '/await.iife.js') return join(DIST, 'await.iife.js')
   return join(PLAYGROUND, pathname)
 }
 
@@ -48,6 +55,13 @@ function streamPage(before, after) {
 createServer(async (request, response) => {
   let pathname = request.url?.split('?')[0] ?? '/'
   if (pathname === '/') pathname = '/index.html'
+
+  if (pathname === '/slow.png') {
+    await delay(SLOW_IMAGE_MS)
+    response.writeHead(200, { 'Content-Type': 'image/png' })
+    response.end(PIXEL)
+    return
+  }
 
   let file = asset(pathname)
   if (!existsSync(file)) {

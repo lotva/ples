@@ -51,4 +51,9 @@ test('astro integration injects styles and runtime inside head', () => {
     /sibling-index/,
     'sequence CSS is not imported unless the plugin option is set'
   )
+  assert.doesNotMatch(
+    html,
+    /ples-ready/,
+    'await CSS is not imported unless the plugin option is set'
+  )
 })
