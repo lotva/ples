@@ -67,5 +67,55 @@
       <h1>Lazy image</h1>
       <img src="/slow.png?lazy" width="32" height="32" alt="" loading="lazy" />
     </section>
+
+    <section
+      id="paired"
+      data-ples
+      data-ples-await="copy"
+      data-ples-effect="slide"
+    >
+      <h1>Own media and await</h1>
+      <img src="/slow.png?and" width="32" height="32" alt="" />
+    </section>
+
+    <section
+      id="caption"
+      data-ples
+      data-ples-await="photo"
+      data-ples-effect="slide"
+    >
+      <h1>Waits for photo</h1>
+      <p>Stays hidden until #photo is ples-ready.</p>
+    </section>
+
+    <section
+      id="orphan"
+      data-ples
+      data-ples-await="missing"
+      data-ples-effect="slide"
+    >
+      <h1>Missing target</h1>
+      <p>Unknown id fails open.</p>
+    </section>
+
+    <div>
+      <section
+        id="ping"
+        data-ples
+        data-ples-await="pong"
+        data-ples-effect="slide"
+      >
+        <h1>Cycle ping</h1>
+      </section>
+
+      <section
+        id="pong"
+        data-ples
+        data-ples-await="ping"
+        data-ples-effect="slide"
+      >
+        <h1>Cycle pong</h1>
+      </section>
+    </div>
   </body>
 </html>

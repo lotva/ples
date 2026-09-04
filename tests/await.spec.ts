@@ -43,4 +43,59 @@ test.describe('ples/await', () => {
     await expect(page.locator('#held')).toHaveClass(/ples-ready/)
     await expect(page.locator('#photo')).not.toHaveClass(/ples-ready/)
   })
+
+  test('waits for another block by id before becoming ready', async ({
+    page
+  }) => {
+    await page.goto('/await.html', { waitUntil: 'domcontentloaded' })
+
+    await expect(page.locator('#caption')).not.toHaveClass(/ples-ready/)
+    await expect(page.locator('#caption')).toHaveCSS('opacity', '0')
+
+    await expect(page.locator('#photo')).toHaveClass(/ples-ready/, {
+      timeout: 3000
+    })
+    await expect(page.locator('#caption')).toHaveClass(/ples-ready/)
+    await expect(page.locator('#caption')).toHaveCSS('opacity', '1')
+  })
+
+  test('still waits for own media after the awaited block is ready', async ({
+    page
+  }) => {
+    let release!: () => void
+    let held = new Promise<void>(resolve => {
+      release = resolve
+    })
+
+    await page.route(
+      url => url.pathname === '/slow.png' && url.search === '?and',
+      async route => {
+        await held
+        await route.continue()
+      }
+    )
+
+    await page.goto('/await.html', { waitUntil: 'domcontentloaded' })
+
+    await expect(page.locator('#copy')).toHaveClass(/ples-ready/)
+    await expect(page.locator('#paired')).not.toHaveClass(/ples-ready/)
+    await expect(page.locator('#paired')).toHaveCSS('opacity', '0')
+
+    release()
+
+    await expect(page.locator('#paired')).toHaveClass(/ples-ready/, {
+      timeout: 3000
+    })
+    await expect(page.locator('#paired')).toHaveCSS('opacity', '1')
+  })
+
+  test('fails open when the awaited id is missing or cyclic', async ({
+    page
+  }) => {
+    await page.goto('/await.html', { waitUntil: 'domcontentloaded' })
+
+    await expect(page.locator('#orphan')).toHaveClass(/ples-ready/)
+    await expect(page.locator('#ping')).toHaveClass(/ples-ready/)
+    await expect(page.locator('#pong')).toHaveClass(/ples-ready/)
+  })
 })

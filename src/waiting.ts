@@ -1,6 +1,9 @@
 const SELECTOR = '[data-ples]'
 const READY = 'ples-ready'
 
+let jobs = new WeakMap<Element, Promise<void>>()
+let ok = Promise.resolve()
+
 function imageReady(image: HTMLImageElement): Promise<void> {
   if (image.loading === 'lazy' && !image.complete) return Promise.resolve()
   return image.decode().catch(() => {})
@@ -12,52 +15,55 @@ function videoReady(video: HTMLVideoElement): Promise<void> {
   }
 
   return new Promise<void>(resolve => {
-    let done = (): void => {
+    let done: EventListener = () => {
       resolve()
     }
-    video.addEventListener('loadeddata', done, { once: true })
-    video.addEventListener('error', done, { once: true })
-    video.addEventListener('suspend', done, { once: true })
+
+    for (let type of ['loadeddata', 'error', 'suspend'] as const) {
+      video.addEventListener(type, done, { once: true })
+    }
   })
 }
 
-function wait(root: Element): Promise<void[]> {
-  let jobs: Promise<void>[] = []
+function wait(root: Element): Promise<unknown> {
+  let media: Promise<void>[] = []
 
   for (let node of [root, ...root.querySelectorAll('img,video')]) {
-    if (node instanceof HTMLImageElement) jobs.push(imageReady(node))
-    else if (node instanceof HTMLVideoElement) jobs.push(videoReady(node))
+    if (node instanceof HTMLImageElement) media.push(imageReady(node))
+    else if (node instanceof HTMLVideoElement) media.push(videoReady(node))
   }
 
-  return Promise.all(jobs)
+  return Promise.all(media)
 }
 
-function reveal(element: HTMLElement): void {
-  void wait(element).then(() => {
+function ready(element: HTMLElement): Promise<void> {
+  let job = jobs.get(element)
+  if (job) return job
+
+  jobs.set(element, ok)
+  let target = document.getElementById(element.dataset.plesAwait ?? '')
+  job = Promise.all([wait(element), target && ready(target)]).then(() => {
     element.classList.add(READY)
   })
+  jobs.set(element, job)
+
+  return job
 }
 
 function scan(root: ParentNode): void {
-  if (root instanceof HTMLElement && root.hasAttribute('data-ples')) {
-    reveal(root)
-  }
+  if (root instanceof HTMLElement && root.matches(SELECTOR)) void ready(root)
 
   for (let element of root.querySelectorAll<HTMLElement>(SELECTOR)) {
-    reveal(element)
+    void ready(element)
   }
 }
 
-function listen(): void {
-  scan(document)
+scan(document)
 
-  new MutationObserver(records => {
-    for (let record of records) {
-      for (let node of record.addedNodes) {
-        if (node instanceof Element) scan(node)
-      }
+new MutationObserver(records => {
+  for (let record of records) {
+    for (let node of record.addedNodes) {
+      if (node instanceof Element) scan(node)
     }
-  }).observe(document, { childList: true, subtree: true })
-}
-
-listen()
+  }
+}).observe(document, { childList: true, subtree: true })
