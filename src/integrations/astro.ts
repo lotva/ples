@@ -12,6 +12,9 @@ export default function ples(options?: PlesOptions): AstroIntegration {
         let { script } = await import('./head.mjs')
         injectScript('page-ssr', 'import "ples/styles";')
         if (options?.scroll) injectScript('page-ssr', 'import "ples/scroll";')
+        if (options?.sequence) {
+          injectScript('page-ssr', 'import "ples/sequence";')
+        }
         injectScript('head-inline', script)
       }
     }

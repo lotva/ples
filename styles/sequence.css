@@ -1,0 +1,20 @@
+@property --ples-stagger {
+  syntax: '<time>';
+  inherits: true;
+  initial-value: 100ms;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (transition-delay: calc(sibling-index() * 1ms)) {
+    [data-ples-sequence] {
+      --ples-stagger: attr(data-ples-sequence type(<time>));
+    }
+
+    [data-ples-sequence] > [data-ples] {
+      transition-delay: calc(
+        var(--ples-stagger-index, calc(sibling-index() - 1)) *
+          var(--ples-stagger)
+      );
+    }
+  }
+}

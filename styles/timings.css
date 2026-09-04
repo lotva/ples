@@ -1,9 +1,3 @@
-@property --ples-stagger {
-  syntax: '<time>';
-  inherits: true;
-  initial-value: 100ms;
-}
-
 @media (prefers-reduced-motion: no-preference) {
   :root:not(.ples) [data-ples],
   .ples [data-ples] {
@@ -19,19 +13,6 @@
       transition-delay: attr(data-ples-hold type(<time>), 0ms);
       transition-duration: attr(data-ples-duration type(<time>), 500ms);
       transition-timing-function: attr(data-ples-ease type(*), ease-out);
-    }
-  }
-
-  @supports (transition-delay: calc(sibling-index() * 1ms)) {
-    [data-ples-sequence] {
-      --ples-stagger: attr(data-ples-sequence type(<time>));
-    }
-
-    [data-ples-sequence] > [data-ples] {
-      transition-delay: calc(
-        var(--ples-stagger-index, calc(sibling-index() - 1)) *
-          var(--ples-stagger)
-      );
     }
   }
 }

@@ -15,7 +15,8 @@ export default defineConfig([
   {
     entry: {
       ples: 'styles/ples.css',
-      scroll: 'styles/scroll.css'
+      scroll: 'styles/scroll.css',
+      sequence: 'styles/sequence.css'
     },
     dts: false,
     css: {

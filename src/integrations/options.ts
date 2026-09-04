@@ -1,11 +1,17 @@
 export type PlesOptions = {
   scroll?: boolean
+  sequence?: boolean
 }
 
-export function stylesheet(
-  style: string,
-  scrollStyle: string,
-  options?: PlesOptions
-): string {
-  return options?.scroll ? style + scrollStyle : style
+export type PlesStyles = {
+  style: string
+  scroll: string
+  sequence: string
+}
+
+export function stylesheet(styles: PlesStyles, options?: PlesOptions): string {
+  let css = styles.style
+  if (options?.scroll) css += styles.scroll
+  if (options?.sequence) css += styles.sequence
+  return css
 }

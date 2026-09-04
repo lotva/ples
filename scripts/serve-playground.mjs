@@ -3,8 +3,8 @@ import { createServer } from 'node:http'
 import { extname, join } from 'node:path'
 import { Readable } from 'node:stream'
 import { pipeline } from 'node:stream/promises'
-import { fileURLToPath } from 'node:url'
 import { setTimeout as delay } from 'node:timers/promises'
+import { fileURLToPath } from 'node:url'
 
 const ROOT = fileURLToPath(new URL('../', import.meta.url))
 const PLAYGROUND = join(ROOT, 'playground')
@@ -29,6 +29,7 @@ const STREAMED_CHUNK = `
 function asset(pathname) {
   if (pathname === '/ples.css') return join(DIST, 'ples.css')
   if (pathname === '/scroll.css') return join(DIST, 'scroll.css')
+  if (pathname === '/sequence.css') return join(DIST, 'sequence.css')
   if (pathname === '/runtime.iife.js') return join(DIST, 'runtime.iife.js')
   return join(PLAYGROUND, pathname)
 }

@@ -51,4 +51,9 @@ test('eleventy plugin injects styles and runtime inside head', () => {
     /timeline-trigger/,
     'scroll CSS is not injected unless the plugin option is set'
   )
+  assert.doesNotMatch(
+    html,
+    /sibling-index/,
+    'sequence CSS is not injected unless the plugin option is set'
+  )
 })

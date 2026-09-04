@@ -15,7 +15,7 @@ A tiny, CSS-first library for coordinating reveal animations across page loads a
 
 **Small.** No dependencies.
 
-[Guarantees](#guarantees) · [Install](#install) · [Setup](#setup) · [Basic usage](#basic-usage) · [Browser support](#browser-support) · [Extra effects](#extra-effects) · [Reloads and in-app navigation](#reloads-and-in-app-navigation) · [Streaming and SPA](#streaming-and-spa)
+[Guarantees](#guarantees) · [Install](#install) · [Setup](#setup) · [Basic usage](#basic-usage) · [Browser support](#browser-support) · [Optional packages](#optional-packages) · [Extra effects](#extra-effects) · [Order and timing](#order-and-timing) · [Reveal on scroll](#reveal-on-scroll) · [Reloads and in-app navigation](#reloads-and-in-app-navigation) · [Streaming and SPA](#streaming-and-spa)
 
 ## Guarantees
 
@@ -166,6 +166,21 @@ To support browsers without typed `attr()`, also set the custom properties from 
 
 Motion is progressive enhancement. If the browser cannot animate, the page still loads as a normal document.
 
+## Optional packages
+
+- [Sequence](#sequence) — stagger sibling reveals.
+- [Reveal on scroll](#reveal-on-scroll) — hold a block until it enters the viewport.
+
+A plugin option turns the package on and inlines its CSS — and the JS too, when the package includes a script. Astro and Vite take `ples({ … })`; Eleventy takes `addPlugin(ples, { … })`.
+
+Without a plugin, add the files from `node_modules`. CSS is `dist/<name>.css`.
+
+```html
+<link rel="stylesheet" href="./node_modules/ples/dist/sequence.css" />
+```
+
+From `ples/head`, concatenate the matching strings onto `style` as in [Setup](#setup): `sequence`, `scroll`.
+
 ## Extra effects
 
 Relax, zoom, and screw ship with the default CSS.
@@ -191,6 +206,60 @@ Transform origin for those three.
 
 `data-ples-angle="-90deg"`\
 Initial angle for screw. Negative values reverse the rotation.
+
+## Order and timing
+
+### Sequence
+
+Stagger direct children without giving each one a hold.
+
+💡 Requires: CSS `sibling-index()`. Without it, the children reveal together.
+
+```diff
+- integrations: [ples()]
++ integrations: [ples({ sequence: true })]
+```
+
+`data-ples-sequence`\
+On the parent. Direct `[data-ples]` children stagger with `sibling-index()`. Default step is `100ms`.
+
+`data-ples-sequence="80ms"`\
+Custom step.
+
+Override one child with `--ples-stagger-index`.
+
+```html
+<div data-ples-sequence="80ms">
+  <p data-ples>One</p>
+  <p data-ples>Two</p>
+  <p data-ples>Three</p>
+</div>
+```
+
+## Reveal on scroll
+
+Hold a block until it scrolls into view.
+
+💡 Requires: CSS `animation-trigger` / `timeline-trigger`. Without them, the block reveals with the rest of the page.
+
+```diff
+- integrations: [ples()]
++ integrations: [ples({ scroll: true })]
+```
+
+`data-ples-scroll`\
+Wait until the block is fully contained in the viewport.
+
+`data-ples-scroll="50%"`\
+Fire partway through the entry range.
+
+Hold defaults to `0ms` on scroll blocks (use `data-ples-hold` to add a pause after the trigger).
+
+```html
+<section data-ples data-ples-scroll data-ples-effect="slide">
+  Below the fold
+</section>
+```
 
 ## Reloads and in-app navigation
 

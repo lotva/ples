@@ -12,7 +12,7 @@ export default function ples(options?: PlesOptions): Plugin {
     transformIndexHtml: {
       order: 'pre',
       async handler(html) {
-        let { script, style, scroll } = await head
+        let { script, style, scroll, sequence } = await head
 
         if (html.includes(script)) {
           return
@@ -21,7 +21,7 @@ export default function ples(options?: PlesOptions): Plugin {
         let tags: HtmlTagDescriptor[] = [
           {
             tag: 'style',
-            children: stylesheet(style, scroll, options),
+            children: stylesheet({ style, scroll, sequence }, options),
             injectTo: 'head'
           },
           {
