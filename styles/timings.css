@@ -10,9 +10,18 @@
   @supports (transition-delay: attr(data-ples-hold type(<time>), 0ms)) {
     :root:not(.ples) [data-ples],
     .ples [data-ples] {
-      transition-delay: attr(data-ples-hold type(<time>), 0ms);
-      transition-duration: attr(data-ples-duration type(<time>), 500ms);
-      transition-timing-function: attr(data-ples-ease type(*), ease-out);
+      transition-delay: attr(
+        data-ples-hold type(<time>),
+        var(--ples-hold, 0ms)
+      );
+      transition-duration: attr(
+        data-ples-duration type(<time>),
+        var(--ples-duration, 500ms)
+      );
+      transition-timing-function: attr(
+        data-ples-ease type(*),
+        var(--ples-ease, ease-out)
+      );
     }
   }
 }

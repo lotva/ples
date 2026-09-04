@@ -24,9 +24,18 @@
     @supports (animation-delay: attr(data-ples-hold type(<time>), 0ms)) {
       .ples [data-ples-scroll],
       .ples[data-ples-stream] [data-ples-scroll] {
-        animation-delay: attr(data-ples-hold type(<time>), 0ms);
-        animation-duration: attr(data-ples-duration type(<time>), 500ms);
-        animation-timing-function: attr(data-ples-ease type(*), ease-out);
+        animation-delay: attr(
+          data-ples-hold type(<time>),
+          var(--ples-hold, 0ms)
+        );
+        animation-duration: attr(
+          data-ples-duration type(<time>),
+          var(--ples-duration, 500ms)
+        );
+        animation-timing-function: attr(
+          data-ples-ease type(*),
+          var(--ples-ease, ease-out)
+        );
         timeline-trigger: --ples-scroll view() entry
           attr(data-ples-scroll type(<percentage>), 100%) exit 0%;
       }
