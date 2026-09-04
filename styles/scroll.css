@@ -4,7 +4,13 @@
     @keyframes ples-reveal {
       to {
         opacity: 1;
+      }
+    }
+
+    @keyframes ples-move {
+      to {
         transform: none;
+        filter: none;
       }
     }
 
@@ -12,13 +18,19 @@
     .ples[data-ples-stream] [data-ples-scroll] {
       opacity: var(--ples-opacity, 0);
       transform: var(--ples-from, none);
+      filter: var(--ples-filter, none);
       transition: none;
-      animation: ples-reveal var(--ples-duration, 500ms)
-        var(--ples-ease, ease-out) forwards;
+      animation:
+        ples-reveal var(--ples-duration, 500ms) var(--ples-fade-ease, ease-out)
+          forwards,
+        ples-move var(--ples-duration, 500ms) var(--ples-ease, ease-out)
+          forwards;
       animation-delay: var(--ples-hold, 0ms);
       trigger-scope: --ples-scroll;
       timeline-trigger: --ples-scroll view() contain;
-      animation-trigger: --ples-scroll play-once;
+      animation-trigger:
+        --ples-scroll play-once,
+        --ples-scroll play-once;
     }
 
     @supports (animation-delay: attr(data-ples-hold type(<time>), 0ms)) {
@@ -32,10 +44,9 @@
           data-ples-duration type(<time>),
           var(--ples-duration, 500ms)
         );
-        animation-timing-function: attr(
-          data-ples-ease type(*),
-          var(--ples-ease, ease-out)
-        );
+        animation-timing-function:
+          attr(data-ples-fade-ease type(*), var(--ples-fade-ease, ease-out)),
+          attr(data-ples-ease type(*), var(--ples-ease, ease-out));
         timeline-trigger: --ples-scroll view() entry
           attr(data-ples-scroll type(<percentage>), 100%) exit 0%;
       }

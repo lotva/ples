@@ -3,6 +3,7 @@
   .ples[data-ples-stream] [data-ples]:not(.ples-ready) {
     opacity: var(--ples-opacity, 0);
     transform: var(--ples-from, none);
+    filter: var(--ples-filter, none);
     transition: none;
   }
 }

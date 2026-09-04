@@ -41,6 +41,14 @@
   transform-origin: var(--ples-origin, center);
 }
 
+[data-ples-effect='focus'] {
+  --ples-from: translate(0, 8px);
+  --ples-filter: blur(8px);
+  --ples-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ples-fade-ease: var(--ples-ease);
+  --ples-duration: 800ms;
+}
+
 @supports (transition-delay: attr(data-ples-hold type(<time>), 0ms)) {
   [data-ples-effect='slide'] {
     --ples-y: attr(data-ples-up type(<length>), 20px);
@@ -72,5 +80,10 @@
     --ples-from: scale(attr(data-ples-scale type(<number>), 0.5))
       rotate(attr(data-ples-angle type(<angle>), 90deg));
     transform-origin: attr(data-ples-origin type(*), center);
+  }
+
+  [data-ples-effect='focus'] {
+    --ples-from: translate(0, attr(data-ples-up type(<length>), 8px));
+    --ples-filter: blur(attr(data-ples-blur type(<length>), 8px));
   }
 }

@@ -1,7 +1,7 @@
 {
   "name": "ples",
-  "version": "2.1.1",
-  "description": "A starter for creating a TypeScript package.",
+  "version": "2.2.0",
+  "description": "A tiny, CSS-first library for coordinating page-load and in-app-transition reveal animations, built on pagereveal.",
   "homepage": "https://github.com/lotva/ples#readme",
   "bugs": {
     "url": "https://github.com/lotva/ples/issues"
@@ -105,7 +105,7 @@
     },
     {
       "path": "dist/ples.css",
-      "limit": "650 B"
+      "limit": "700 B"
     },
     {
       "path": "dist/scroll.css",
