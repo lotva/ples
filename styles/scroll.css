@@ -21,9 +21,9 @@
       filter: var(--ples-filter, none);
       transition: none;
       animation:
-        ples-reveal var(--ples-duration, 500ms) var(--ples-fade-ease, ease-out)
+        ples-reveal var(--ples-duration, 600ms) var(--ples-fade-ease, ease-out)
           forwards,
-        ples-move var(--ples-duration, 500ms) var(--ples-ease, ease-out)
+        ples-move var(--ples-duration, 600ms) var(--ples-ease, ease-out)
           forwards;
       animation-delay: var(--ples-hold, 0ms);
       trigger-scope: --ples-scroll;
@@ -42,7 +42,7 @@
         );
         animation-duration: attr(
           data-ples-duration type(<time>),
-          var(--ples-duration, 500ms)
+          var(--ples-duration, 600ms)
         );
         animation-timing-function:
           attr(data-ples-fade-ease type(*), var(--ples-fade-ease, ease-out)),

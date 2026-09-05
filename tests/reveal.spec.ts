@@ -36,11 +36,12 @@ test.describe('a fresh visit', () => {
       CSS.supports('transition-delay', 'attr(data-ples-hold type(<time>), 0ms)')
     )
 
-    let expected = supportsAdvancedAttr ? '0.2s' : '0s'
+    let expected = supportsAdvancedAttr ? '0.2s' : '0.05s'
     await expect(page.locator('#zoom-held')).toHaveCSS(
       'transition-delay',
       expected
     )
+    await expect(page.locator('#fresh')).toHaveCSS('transition-delay', '0.05s')
   })
 
   test('lets a section configure ease from data attributes, where attr() is supported', async ({

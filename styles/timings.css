@@ -2,10 +2,10 @@
   :root:not(.ples) [data-ples],
   .ples [data-ples] {
     transition:
-      opacity var(--ples-duration, 500ms) var(--ples-fade-ease, ease-out),
-      transform var(--ples-duration, 500ms) var(--ples-ease, ease-out),
-      filter var(--ples-duration, 500ms) var(--ples-ease, ease-out);
-    transition-delay: var(--ples-hold, 0ms);
+      opacity var(--ples-duration, 600ms) var(--ples-fade-ease, ease-out),
+      transform var(--ples-duration, 600ms) var(--ples-ease, ease-out),
+      filter var(--ples-duration, 600ms) var(--ples-ease, ease-out);
+    transition-delay: var(--ples-hold, 50ms);
   }
 
   @supports (transition-delay: attr(data-ples-hold type(<time>), 0ms)) {
@@ -13,11 +13,11 @@
     .ples [data-ples] {
       transition-delay: attr(
         data-ples-hold type(<time>),
-        var(--ples-hold, 0ms)
+        var(--ples-hold, 50ms)
       );
       transition-duration: attr(
         data-ples-duration type(<time>),
-        var(--ples-duration, 500ms)
+        var(--ples-duration, 600ms)
       );
       transition-timing-function:
         attr(data-ples-fade-ease type(*), var(--ples-fade-ease, ease-out)),
