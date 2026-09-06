@@ -6,6 +6,15 @@ import {
   trackTransitions
 } from './support.js'
 
+declare global {
+  interface Window {
+    plesRevealProbe?: {
+      optedShown: boolean
+      defaultShown: boolean
+    }
+  }
+}
+
 test.describe('an in-app transition', () => {
   test('animates by default, the same as a fresh visit', async ({
     page,
@@ -84,5 +93,85 @@ test.describe('an in-app transition', () => {
 
     await expect(page.locator('#opted-in-element')).toHaveClass(/ples-shown/)
     await expectTransition(page, 'opted-in-element', true)
+  })
+})
+
+test.describe('ples/navigation', () => {
+  test('ignores navigate=false attributes when the addon is not loaded', async ({
+    page,
+    browserName
+  }) => {
+    skipUnlessNavigationApi(browserName)
+    await trackTransitions(page)
+    await page.goto('/index.html')
+
+    await page.goto('/page-two-core-only.html')
+
+    await expect(page.locator('#opted-out-element')).toHaveClass(/ples-shown/)
+    await expectTransition(page, 'opted-out-element', true)
+  })
+
+  test('shows navigate=false elements before the core double-rAF play', async ({
+    page,
+    browserName
+  }) => {
+    skipUnlessNavigationApi(browserName)
+
+    await page.addInitScript(() => {
+      addEventListener('pagereveal', () => {
+        requestAnimationFrame(() => {
+          window.plesRevealProbe = {
+            optedShown: Boolean(
+              document
+                .getElementById('opted-out-element')
+                ?.classList.contains('ples-shown')
+            ),
+            defaultShown: Boolean(
+              document
+                .getElementById('default')
+                ?.classList.contains('ples-shown')
+            )
+          }
+        })
+      })
+    })
+
+    await page.goto('/index.html')
+    await page.getByRole('link', { name: 'page two' }).click()
+
+    await expect(page.locator('#opted-out-element')).toHaveClass(/ples-shown/)
+    await expect
+      .poll(() => page.evaluate(() => window.plesRevealProbe))
+      .toEqual({ optedShown: true, defaultShown: false })
+  })
+
+  test('keeps back/forward restores instant, without replaying the reveal', async ({
+    page,
+    browserName
+  }) => {
+    skipUnlessNavigationApi(browserName)
+    await trackTransitions(page)
+    await page.goto('/index.html')
+    await expect(page.locator('#fresh')).toHaveClass(/ples-shown/)
+    await expectTransition(page, 'fresh', true)
+
+    await page.getByRole('link', { name: 'page two' }).click()
+    await expect(page.locator('#default')).toHaveClass(/ples-shown/)
+
+    await page.goBack()
+
+    await expect(page.locator('#fresh')).toHaveClass(/ples-shown/)
+    await expect(page.locator('#fresh')).toHaveCSS('opacity', '1')
+    expect(
+      await page.evaluate(
+        () => globalThis.navigation?.activation?.navigationType
+      )
+    ).toBe('traverse')
+
+    await page.evaluate(() => {
+      window.plesTransitioned = []
+    })
+    await page.waitForTimeout(400)
+    expect(await page.evaluate(() => window.plesTransitioned)).toEqual([])
   })
 })

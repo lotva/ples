@@ -1,31 +1,29 @@
-export type NavigationKind = 'fresh' | 'reload' | 'internal'
+/**
+ * Optional opt-out for reload and in-app navigations.
+ * Load after the core runtime. Fresh visits always animate.
+ */
+addEventListener(
+  'pagereveal',
+  () => {
+    let activation = globalThis.navigation?.activation
+    let type = activation?.navigationType
+    let kind: 'reload' | 'navigate' | null = null
 
-export function classifyNavigation(): NavigationKind {
-  let activation = globalThis.navigation?.activation
+    if (type === 'reload') {
+      kind = 'reload'
+    } else if (type !== 'traverse' && activation?.from) {
+      kind = 'navigate'
+    }
 
-  if (!activation) return 'fresh'
-  if (activation.navigationType === 'reload') return 'reload'
-  return activation.from ? 'internal' : 'fresh'
-}
+    if (!kind) return
 
-const NAVIGATE_ATTRIBUTE = 'data-ples-navigate'
-const RELOAD_ATTRIBUTE = 'data-ples-reload'
-
-function isAttributeEnabled(value: string | null): boolean {
-  return value !== 'false'
-}
-
-export function wantsNavigateAnimation(element: Element): boolean {
-  let own = element.getAttribute(NAVIGATE_ATTRIBUTE)
-  if (own !== null) return isAttributeEnabled(own)
-
-  return isAttributeEnabled(
-    document.documentElement.getAttribute(NAVIGATE_ATTRIBUTE)
-  )
-}
-
-export function wantsReloadAnimation(): boolean {
-  return isAttributeEnabled(
-    document.documentElement.getAttribute(RELOAD_ATTRIBUTE)
-  )
-}
+    document
+      .querySelectorAll(
+        `html[data-ples-${kind}="false"] [data-ples]:not([data-ples-${kind}]), [data-ples][data-ples-${kind}="false"]`
+      )
+      .forEach(element => {
+        element.classList.add('ples-shown')
+      })
+  },
+  { once: true }
+)

@@ -9,14 +9,19 @@ export default function ples(options?: PlesOptions): AstroIntegration {
     name: 'ples',
     hooks: {
       async 'astro:config:setup'({ injectScript }) {
-        let { script, awaitScript } = await import('./head.mjs')
+        let { script, awaitScript, navigationScript } = await import(
+          './head.mjs'
+        )
         injectScript('page-ssr', 'import "ples/styles";')
         if (options?.scroll) injectScript('page-ssr', 'import "ples/scroll";')
         if (options?.sequence) {
           injectScript('page-ssr', 'import "ples/sequence";')
         }
         if (options?.await) injectScript('page-ssr', 'import "ples/await.css";')
-        injectScript('head-inline', scripts(script, awaitScript, options))
+        injectScript(
+          'head-inline',
+          scripts({ script, awaitScript, navigationScript }, options)
+        )
       }
     }
   }

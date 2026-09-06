@@ -22,6 +22,15 @@ export default defineConfig([
     }
   },
   {
+    entry: { navigation: 'src/navigation.ts' },
+    format: 'iife',
+    minify: true,
+    dts: false,
+    hooks: {
+      'build:done': scheduleBuildHead
+    }
+  },
+  {
     entry: {
       ples: 'styles/ples.css',
       scroll: 'styles/scroll.css',

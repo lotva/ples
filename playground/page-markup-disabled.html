@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <title>ples playground — markup disabled</title>
     <script src="/runtime.iife.js"></script>
+    <script src="/navigation.iife.js"></script>
     <link rel="stylesheet" href="/ples.css" />
     <style>
       body {
@@ -31,15 +32,15 @@
     </nav>
 
     <!--
-			No page-specific script — runtime.iife.js in <head> is enough.
+			Opt-out needs ples/navigation after the core runtime.
 			data-ples-navigate="false" and data-ples-reload="false" on
-			<html> do the whole job.
+			<html> do the rest.
 		-->
     <section id="default" data-ples data-ples-effect="slide">
       <h1>Markup-disabled</h1>
       <p>
         Stays instant on an in-app transition or a reload — set entirely through
-        &lt;html&gt; attributes, no listen() options.
+        &lt;html&gt; attributes.
       </p>
     </section>
 

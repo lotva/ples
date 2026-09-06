@@ -1,9 +1,3 @@
-import {
-  classifyNavigation,
-  wantsNavigateAnimation,
-  wantsReloadAnimation
-} from './navigation.js'
-
 const SELECTOR = '[data-ples]'
 const SHOWN_CLASS = 'ples-shown'
 const STREAM_ATTRIBUTE = 'data-ples-stream'
@@ -38,21 +32,6 @@ function play(elements: ArrayLike<HTMLElement> & Iterable<HTMLElement>): void {
   )
 }
 
-function partition(elements: Iterable<HTMLElement>): {
-  animate: HTMLElement[]
-  instant: HTMLElement[]
-} {
-  let animate: HTMLElement[] = []
-  let instant: HTMLElement[] = []
-
-  for (let element of elements) {
-    let target = wantsNavigateAnimation(element) ? animate : instant
-    target.push(element)
-  }
-
-  return { animate, instant }
-}
-
 export function listen(): void {
   function handleReveal(event?: PageRevealEvent): void {
     let elements = candidates()
@@ -63,22 +42,7 @@ export function listen(): void {
         return
       }
 
-      let kind = classifyNavigation()
-
-      if (kind === 'fresh') {
-        play(elements)
-        return
-      }
-
-      if (kind === 'reload') {
-        if (wantsReloadAnimation()) play(elements)
-        else show(elements)
-        return
-      }
-
-      let { animate, instant } = partition(elements)
-      markShown(instant)
-      play(animate)
+      play(elements)
     } catch {
       show(elements)
     }

@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <title>ples playground — config disabled</title>
     <script src="/runtime.iife.js"></script>
+    <script src="/navigation.iife.js"></script>
     <link rel="stylesheet" href="/ples.css" />
     <style>
       body {
@@ -32,14 +33,13 @@
 
     <!--
 			data-ples-navigate="false" and data-ples-reload="false" on
-			<html> turn both off globally — the same defaults
-			page-markup-disabled.html sets through markup alone.
+			<html> turn both off globally — needs ples/navigation.
 		-->
     <section id="default" data-ples data-ples-effect="slide">
       <h1>Config disabled</h1>
       <p>
-        Stays instant on an in-app transition or a reload — the global option
-        turns both off.
+        Stays instant on an in-app transition or a reload — the page-wide
+        attributes turn both off.
       </p>
     </section>
 

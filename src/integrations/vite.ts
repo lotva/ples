@@ -12,8 +12,15 @@ export default function ples(options?: PlesOptions): Plugin {
     transformIndexHtml: {
       order: 'pre',
       async handler(html) {
-        let { script, awaitScript, style, scroll, sequence, awaitStyle } =
-          await head
+        let {
+          script,
+          awaitScript,
+          navigationScript,
+          style,
+          scroll,
+          sequence,
+          awaitStyle
+        } = await head
 
         if (html.includes(script)) {
           return
@@ -30,7 +37,10 @@ export default function ples(options?: PlesOptions): Plugin {
           },
           {
             tag: 'script',
-            children: scripts(script, awaitScript, options),
+            children: scripts(
+              { script, awaitScript, navigationScript },
+              options
+            ),
             injectTo: 'head'
           }
         ]

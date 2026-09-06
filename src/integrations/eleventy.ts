@@ -54,13 +54,20 @@ export default function ples(
   eleventyConfig.htmlTransformer.addPosthtmlPlugin(
     'html',
     () => async tree => {
-      let { script, awaitScript, style, scroll, sequence, awaitStyle } =
-        await head
+      let {
+        script,
+        awaitScript,
+        navigationScript,
+        style,
+        scroll,
+        sequence,
+        awaitStyle
+      } = await head
 
       return injectAssets(
         tree,
         stylesheet({ style, scroll, sequence, awaitStyle }, options),
-        scripts(script, awaitScript, options)
+        scripts({ script, awaitScript, navigationScript }, options)
       )
     },
     { name: 'ples' }

@@ -1,10 +1,9 @@
 <!doctype html>
-<html lang="en" data-ples-reload="false">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>ples playground — reload disabled</title>
+    <title>ples playground — page two, core only</title>
     <script src="/runtime.iife.js"></script>
-    <script src="/navigation.iife.js"></script>
     <link rel="stylesheet" href="/ples.css" />
     <style>
       body {
@@ -24,18 +23,22 @@
   <body>
     <nav>
       <a href="index.html">page one</a>
-      <a href="page-two.html">page two</a>
-      <a href="page-config-disabled.html">page config-disabled</a>
-      <a href="page-markup-disabled.html">page markup-disabled</a>
-      <a href="page-reload-disabled.html">page reload-disabled</a>
-      <a href="page-view-transition.html">page view-transition</a>
+      <a href="page-two-core-only.html">page two core-only</a>
     </nav>
 
     <section id="default" data-ples data-ples-effect="slide">
-      <h1>Reload disabled</h1>
-      <p>
-        Stays instant on reload, but still animates on an in-app transition.
-      </p>
+      <h1>Page two, core only</h1>
+      <p>No ples/navigation — navigate=false attributes are ignored.</p>
+    </section>
+
+    <section
+      id="opted-out-element"
+      data-ples
+      data-ples-navigate="false"
+      data-ples-effect="relax"
+    >
+      <h1>Marked navigate=false</h1>
+      <p>Still animates: the navigation addon is not loaded.</p>
     </section>
   </body>
 </html>

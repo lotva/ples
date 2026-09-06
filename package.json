@@ -1,6 +1,6 @@
 {
   "name": "ples",
-  "version": "4.0.0",
+  "version": "5.0.0",
   "description": "A tiny, CSS-first library for coordinating page-load and in-app-transition reveal animations, built on pagereveal.",
   "homepage": "https://github.com/lotva/ples#readme",
   "bugs": {
@@ -19,6 +19,7 @@
   "sideEffects": [
     "./dist/runtime.iife.js",
     "./dist/await.iife.js",
+    "./dist/navigation.iife.js",
     "./dist/ples.css",
     "./dist/scroll.css",
     "./dist/sequence.css",
@@ -44,6 +45,7 @@
     },
     "./runtime": "./dist/runtime.iife.js",
     "./await": "./dist/await.iife.js",
+    "./navigation": "./dist/navigation.iife.js",
     "./styles": "./dist/ples.css",
     "./scroll": "./dist/scroll.css",
     "./sequence": "./dist/sequence.css",
@@ -118,6 +120,10 @@
     {
       "path": "dist/await.iife.js",
       "limit": "500 B"
+    },
+    {
+      "path": "dist/navigation.iife.js",
+      "limit": "200 B"
     },
     {
       "path": "dist/await.css",

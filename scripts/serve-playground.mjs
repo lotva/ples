@@ -38,6 +38,9 @@ function asset(pathname) {
   if (pathname === '/await.css') return join(DIST, 'await.css')
   if (pathname === '/runtime.iife.js') return join(DIST, 'runtime.iife.js')
   if (pathname === '/await.iife.js') return join(DIST, 'await.iife.js')
+  if (pathname === '/navigation.iife.js') {
+    return join(DIST, 'navigation.iife.js')
+  }
   return join(PLAYGROUND, pathname)
 }
 
