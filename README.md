@@ -29,7 +29,7 @@ A tiny, CSS-first library for coordinating reveal animations across page loads a
 
 **If the script fails.** When the script throws, every marked element is shown immediately.
 
-**You choose whether it plays on navigate and reload.** You can skip the animation on in-app navigation and on reload. A first visit always plays.
+**You choose whether it plays on navigate and reload.** You can skip the animation on in-app navigation and on reload, or drop hold and stagger so blocks play together. A first visit always plays.
 
 ## Install
 
@@ -107,7 +107,7 @@ export default defineConfig({
 
 Tune the built-in fade and slide from markup.
 
-💡 Values are CSS types (`500ms`, `12px`), not unitless numbers.
+💡 Values are CSS types (`600ms`, `12px`), not unitless numbers.
 
 `data-ples`\
 Marks a reveal block. Required.
@@ -116,13 +116,13 @@ Marks a reveal block. Required.
 Built-in effect. Fade and slide come with the default CSS. Omit it for fade.
 
 `data-ples-duration="700ms"`\
-Transition duration. Default is `500ms`.
+Transition duration. Default is `600ms`.
 
 `data-ples-hold="300ms"`\
-Delay after the reveal starts. Default is `0ms`.
+Delay after the reveal starts. Default is `50ms`.
 
-`data-ples-ease`\
-Timing function. Default is `ease-out`.
+`data-ples-ease` and `data-ples-fade-ease`\
+Timing functions. Default is `ease-out`. Fade is separate from transform and filter. Slide sets its own transform curve.
 
 `data-ples-up="12px"` / `data-ples-down="8px"`\
 For `slide`, vertical offset. Default is `20px` up. If both are set, down wins.
@@ -131,9 +131,9 @@ For `slide`, vertical offset. Default is `20px` up. If both are set, down wins.
 For `slide`, horizontal offset. Default is none. Axes are independent of up/down. If both are set, right wins.
 
 `data-ples-opaque`\
-Skip the fade. The element stays opaque and only transform animates.
+Skip the fade. The element stays opaque and only transform/filter animate.
 
-Custom motion works through CSS variables on the element. `--ples-duration`, `--ples-hold`, and `--ples-ease` are the same knobs as the attributes. Slide builds `--ples-from` from `--ples-x` and `--ples-y`. `--ples-opacity` is the fade start.
+Custom motion works through CSS variables on the element. `--ples-duration`, `--ples-hold`, `--ples-ease`, and `--ples-fade-ease` are the same knobs as the attributes. Slide builds `--ples-from` from `--ples-x` and `--ples-y`. `--ples-filter` and `--ples-opacity` are the other start values.
 
 ```html
 <p data-ples style="--ples-from: translateY(8px); --ples-duration: 700ms">
@@ -168,26 +168,29 @@ Motion is progressive enhancement. If the browser cannot animate, the page still
 
 ## Optional packages
 
+- [Await](#await) — wait for images, videos, and other blocks.
 - [Sequence](#sequence) — stagger sibling reveals.
 - [Reveal on scroll](#reveal-on-scroll) — hold a block until it enters the viewport.
+- [Navigation](#reloads-and-in-app-navigation) — choose whether the animation plays on navigate and reload.
 
 A plugin option turns the package on and inlines its CSS — and the JS too, when the package includes a script. Astro and Vite take `ples({ … })`; Eleventy takes `addPlugin(ples, { … })`.
 
-Without a plugin, add the files from `node_modules`. CSS is `dist/<name>.css`.
+Without a plugin, add the files from `node_modules`. CSS is `dist/<name>.css`. Await and navigation also ship `dist/<name>.iife.js` — load navigation after the core runtime.
 
 ```html
-<link rel="stylesheet" href="./node_modules/ples/dist/sequence.css" />
+<link rel="stylesheet" href="./node_modules/ples/dist/await.css" />
+<script src="./node_modules/ples/dist/await.iife.js"></script>
 ```
 
-From `ples/head`, concatenate the matching strings onto `style` as in [Setup](#setup): `sequence`, `scroll`.
+From `ples/head`, concatenate the matching strings onto `style` and `script` as in [Setup](#setup): `awaitStyle` + `awaitScript`, `sequence`, `scroll`, `navigationStyle` + `navigationScript`.
 
 ## Extra effects
 
-Relax, zoom, and screw ship with the default CSS.
+Relax, zoom, screw, and focus ship with the default CSS.
 
 All effects are ported from Ilya Birman’s [Emerge](https://github.com/ilyabirman/Emerge).
 
-💡 Requires: typed `attr()` for `data-ples-scale`, `data-ples-origin`, and `data-ples-angle`. Without it, set `--ples-origin` and put scale and angle on `--ples-from`.
+💡 Requires: typed `attr()` for `data-ples-scale`, `data-ples-origin`, `data-ples-angle`, and `data-ples-blur`. Without it, set `--ples-origin` and put scale, angle, and blur on `--ples-from` and `--ples-filter`.
 
 `data-ples-effect="relax"`\
 Scale from `0.92` on the Y axis, origin `top`.
@@ -198,6 +201,9 @@ Scale from `0.5`, origin `center`.
 `data-ples-effect="screw"`\
 Scale from `0.5` and rotate from `90deg`, origin `center`.
 
+`data-ples-effect="focus"`\
+Lift `8px` and blur `8px`. Default duration is `800ms`.
+
 `data-ples-scale="0.8"`\
 Initial scale for relax, zoom, and screw.
 
@@ -207,7 +213,43 @@ Transform origin for those three.
 `data-ples-angle="-90deg"`\
 Initial angle for screw. Negative values reverse the rotation.
 
+`data-ples-up="12px"` and `data-ples-blur="6px"`\
+For focus, the lift and blur.
+
+💡 `--ples-filter` also works on any block without loading a focus effect.
+
 ## Order and timing
+
+### Await
+
+Wait for images and videos (and for other reveal blocks) before playing.
+
+```diff
+- integrations: [ples()]
++ integrations: [ples({ await: true })]
+```
+
+A block stays hidden until its images and videos are ready. Images wait to decode. Videos wait until they have data, unless `preload="none"`. Broken media fails open.
+
+`data-ples-await="photo"`\
+Wait for `#photo` to become ready (not for its animation to finish). That target should also be `[data-ples]`. Missing or cyclic ids fail open.
+
+```html
+<section data-ples>
+  <img src="/hero.jpg" alt="" />
+</section>
+```
+
+Wait for a named block, then hold:
+
+```html
+<section data-ples data-ples-await="hero" data-ples-hold="500ms">
+  After hero is ready, then 500ms
+</section>
+<section id="hero" data-ples>
+  <img src="/hero.jpg" alt="" />
+</section>
+```
 
 ### Sequence
 
@@ -263,11 +305,16 @@ Hold defaults to `0ms` on scroll blocks (use `data-ples-hold` to add a pause aft
 
 ## Reloads and in-app navigation
 
-By default every load animates the same way: a fresh visit, an in-app navigation, and a reload. Fresh visits always keep that animation.
+By default every load animates the same way: a fresh visit, an in-app navigation, and a reload. Fresh visits always keep that animation. The optional navigation package is how you change navigate and reload.
 
 💡 Requires: the Navigation API. Without it, every load animates like a first visit.
 
-An element’s own `data-ples-navigate` wins over `<html>`, which wins over the default (animate). Reload is set on `<html>` only.
+```diff
+- integrations: [ples()]
++ integrations: [ples({ navigation: true })]
+```
+
+An element’s own attribute wins over `<html>`, which wins over the default (animate).
 
 `data-ples-navigate="false"`\
 Skip on in-app navigation. On a block, only that block skips. On `<html>`, every block skips; add `data-ples-navigate` on a block to play it anyway:
@@ -280,7 +327,14 @@ Skip on in-app navigation. On a block, only that block skips. On `<html>`, every
 ```
 
 `data-ples-reload="false"`\
-On `<html>`: skip the animation on reload.
+Same shape for reload.
+
+`data-ples-navigate="together"` / `data-ples-reload="together"`\
+On `<html>`: drop hold and stagger so blocks play together. Fresh visits keep their delays.
+
+```html
+<html data-ples-navigate="together" data-ples-reload="together"></html>
+```
 
 ## Streaming and SPA
 

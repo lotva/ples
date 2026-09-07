@@ -10,6 +10,7 @@ export type PlesStyles = {
   scroll: string
   sequence: string
   awaitStyle: string
+  navigationStyle: string
 }
 
 export type PlesScripts = {
@@ -23,6 +24,7 @@ export function stylesheet(styles: PlesStyles, options?: PlesOptions): string {
   if (options?.scroll) css += styles.scroll
   if (options?.sequence) css += styles.sequence
   if (options?.await) css += styles.awaitStyle
+  if (options?.navigation) css += styles.navigationStyle
   return css
 }
 

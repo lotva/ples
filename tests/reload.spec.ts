@@ -37,4 +37,21 @@ test.describe('reloading the page', () => {
 
     await expect(page.locator('#default')).toHaveClass(/ples-shown/)
   })
+
+  test('collapses hold and sequence stagger when together is set', async ({
+    page,
+    browserName
+  }) => {
+    skipUnlessNavigationApi(browserName)
+    await page.goto('/page-together.html')
+    await expect(page.locator('#held')).toHaveCSS('transition-delay', '0.3s')
+    await expect(page.locator('html')).not.toHaveClass(/ples-reload/)
+
+    await page.reload()
+
+    await expect(page.locator('#held')).toHaveClass(/ples-shown/)
+    await expect(page.locator('html')).toHaveClass(/ples-reload/)
+    await expect(page.locator('#held')).toHaveCSS('transition-delay', '0s')
+    await expect(page.locator('#stagger-b')).toHaveCSS('transition-delay', '0s')
+  })
 })

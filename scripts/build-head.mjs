@@ -8,6 +8,7 @@ const STYLE = new URL('ples.css', DIST)
 const SCROLL = new URL('scroll.css', DIST)
 const SEQUENCE = new URL('sequence.css', DIST)
 const AWAIT_STYLE = new URL('await.css', DIST)
+const NAVIGATION_STYLE = new URL('navigation.css', DIST)
 
 const SOURCEMAP_PATTERN =
   /(?:\/\/# sourceMappingURL=[^\n]*|\/\*# sourceMappingURL=[^*]*\*\/)\s*/g
@@ -24,7 +25,8 @@ export function buildHead() {
     !existsSync(STYLE) ||
     !existsSync(SCROLL) ||
     !existsSync(SEQUENCE) ||
-    !existsSync(AWAIT_STYLE)
+    !existsSync(AWAIT_STYLE) ||
+    !existsSync(NAVIGATION_STYLE)
   ) {
     return
   }
@@ -36,15 +38,18 @@ export function buildHead() {
   let scroll = stripSourceMappingURL(readFileSync(SCROLL, 'utf8'))
   let sequence = stripSourceMappingURL(readFileSync(SEQUENCE, 'utf8'))
   let awaitStyle = stripSourceMappingURL(readFileSync(AWAIT_STYLE, 'utf8'))
+  let navigationStyle = stripSourceMappingURL(
+    readFileSync(NAVIGATION_STYLE, 'utf8')
+  )
 
   writeFileSync(
     new URL('head.mjs', DIST),
-    `export const script = ${JSON.stringify(script)}\nexport const awaitScript = ${JSON.stringify(awaitScript)}\nexport const navigationScript = ${JSON.stringify(navigationScript)}\nexport const style = ${JSON.stringify(style)}\nexport const scroll = ${JSON.stringify(scroll)}\nexport const sequence = ${JSON.stringify(sequence)}\nexport const awaitStyle = ${JSON.stringify(awaitStyle)}\n`
+    `export const script = ${JSON.stringify(script)}\nexport const awaitScript = ${JSON.stringify(awaitScript)}\nexport const navigationScript = ${JSON.stringify(navigationScript)}\nexport const style = ${JSON.stringify(style)}\nexport const scroll = ${JSON.stringify(scroll)}\nexport const sequence = ${JSON.stringify(sequence)}\nexport const awaitStyle = ${JSON.stringify(awaitStyle)}\nexport const navigationStyle = ${JSON.stringify(navigationStyle)}\n`
   )
 
   writeFileSync(
     new URL('head.d.mts', DIST),
-    `export declare const script: string\nexport declare const awaitScript: string\nexport declare const navigationScript: string\nexport declare const style: string\nexport declare const scroll: string\nexport declare const sequence: string\nexport declare const awaitStyle: string\n`
+    `export declare const script: string\nexport declare const awaitScript: string\nexport declare const navigationScript: string\nexport declare const style: string\nexport declare const scroll: string\nexport declare const sequence: string\nexport declare const awaitStyle: string\nexport declare const navigationStyle: string\n`
   )
 }
 

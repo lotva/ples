@@ -174,4 +174,53 @@ test.describe('ples/navigation', () => {
     await page.waitForTimeout(400)
     expect(await page.evaluate(() => window.plesTransitioned)).toEqual([])
   })
+
+  test('keeps local hold on a fresh visit despite together markup', async ({
+    page,
+    browserName
+  }) => {
+    skipUnlessNavigationApi(browserName)
+    await page.goto('/page-together.html')
+
+    await expect(page.locator('#held')).toHaveClass(/ples-shown/)
+    await expect(page.locator('html')).not.toHaveClass(/ples-navigate/)
+    await expect(page.locator('#held')).toHaveCSS('transition-delay', '0.3s')
+  })
+
+  test('collapses hold and sequence stagger on in-app navigate', async ({
+    page,
+    browserName
+  }) => {
+    skipUnlessNavigationApi(browserName)
+    await page.goto('/index.html')
+
+    await page.getByRole('link', { name: 'page together' }).click()
+
+    await expect(page.locator('#held')).toHaveClass(/ples-shown/)
+    await expect(page.locator('html')).toHaveClass(/ples-navigate/)
+    await expect(page.locator('#held')).toHaveCSS('transition-delay', '0s')
+    await expect(page.locator('#stagger-b')).toHaveCSS('transition-delay', '0s')
+  })
+
+  test('leaves late inserts with their own hold after stream mode', async ({
+    page,
+    browserName
+  }) => {
+    skipUnlessNavigationApi(browserName)
+    await page.goto('/index.html')
+    await page.getByRole('link', { name: 'page together' }).click()
+
+    await expect(page.locator('html')).toHaveAttribute('data-ples-stream', '')
+    await expect(page.locator('html')).toHaveClass(/ples-navigate/)
+
+    await page.evaluate(() => {
+      let section = document.createElement('section')
+      section.id = 'late'
+      section.setAttribute('data-ples', '')
+      section.setAttribute('data-ples-hold', '250ms')
+      document.body.append(section)
+    })
+
+    await expect(page.locator('#late')).toHaveCSS('transition-delay', '0.25s')
+  })
 })

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en" data-ples-navigate="together" data-ples-reload="together">
+  <head>
+    <meta charset="utf-8" />
+    <title>ples playground — navigate together</title>
+    <script src="/runtime.iife.js"></script>
+    <script src="/navigation.iife.js"></script>
+    <link rel="stylesheet" href="/ples.css" />
+    <link rel="stylesheet" href="/navigation.css" />
+    <link rel="stylesheet" href="/sequence.css" />
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        max-width: 32rem;
+        margin: 4rem auto;
+        padding: 0 1rem;
+      }
+      section {
+        margin-block-end: 3rem;
+      }
+      nav a {
+        margin-inline-end: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a href="index.html">page one</a>
+      <a href="page-together.html">page together</a>
+    </nav>
+
+    <section
+      id="held"
+      data-ples
+      data-ples-effect="slide"
+      data-ples-hold="300ms"
+    >
+      <h1>Held 300ms</h1>
+      <p>On navigate or reload, hold collapses to 0; effect and duration stay.</p>
+    </section>
+
+    <div id="sequence" data-ples-sequence="80ms">
+      <section id="stagger-a" data-ples data-ples-effect="slide">
+        <h1>Stagger A</h1>
+      </section>
+      <section id="stagger-b" data-ples data-ples-effect="slide">
+        <h1>Stagger B</h1>
+      </section>
+    </div>
+  </body>
+</html>

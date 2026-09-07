@@ -19,7 +19,8 @@ export default function ples(options?: PlesOptions): Plugin {
           style,
           scroll,
           sequence,
-          awaitStyle
+          awaitStyle,
+          navigationStyle
         } = await head
 
         if (html.includes(script)) {
@@ -30,7 +31,7 @@ export default function ples(options?: PlesOptions): Plugin {
           {
             tag: 'style',
             children: stylesheet(
-              { style, scroll, sequence, awaitStyle },
+              { style, scroll, sequence, awaitStyle, navigationStyle },
               options
             ),
             injectTo: 'head'

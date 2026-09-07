@@ -61,12 +61,16 @@ export default function ples(
         style,
         scroll,
         sequence,
-        awaitStyle
+        awaitStyle,
+        navigationStyle
       } = await head
 
       return injectAssets(
         tree,
-        stylesheet({ style, scroll, sequence, awaitStyle }, options),
+        stylesheet(
+          { style, scroll, sequence, awaitStyle, navigationStyle },
+          options
+        ),
         scripts({ script, awaitScript, navigationScript }, options)
       )
     },

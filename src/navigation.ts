@@ -1,5 +1,6 @@
 /**
- * Optional opt-out for reload and in-app navigations.
+ * Optional navigation behaviour: opt-out of reload/navigate reveals, and
+ * mark in-app navigations and reloads for CSS (`together`).
  * Load after the core runtime. Fresh visits always animate.
  */
 addEventListener(
@@ -16,6 +17,8 @@ addEventListener(
     }
 
     if (!kind) return
+
+    document.documentElement.classList.add(`ples-${kind}`)
 
     document
       .querySelectorAll(

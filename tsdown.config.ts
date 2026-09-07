@@ -35,7 +35,8 @@ export default defineConfig([
       ples: 'styles/ples.css',
       scroll: 'styles/scroll.css',
       sequence: 'styles/sequence.css',
-      await: 'styles/await.css'
+      await: 'styles/await.css',
+      navigation: 'styles/navigation.css'
     },
     dts: false,
     css: {

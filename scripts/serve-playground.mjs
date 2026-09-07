@@ -36,6 +36,7 @@ function asset(pathname) {
   if (pathname === '/scroll.css') return join(DIST, 'scroll.css')
   if (pathname === '/sequence.css') return join(DIST, 'sequence.css')
   if (pathname === '/await.css') return join(DIST, 'await.css')
+  if (pathname === '/navigation.css') return join(DIST, 'navigation.css')
   if (pathname === '/runtime.iife.js') return join(DIST, 'runtime.iife.js')
   if (pathname === '/await.iife.js') return join(DIST, 'await.iife.js')
   if (pathname === '/navigation.iife.js') {

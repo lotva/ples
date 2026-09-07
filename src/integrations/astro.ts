@@ -18,6 +18,9 @@ export default function ples(options?: PlesOptions): AstroIntegration {
           injectScript('page-ssr', 'import "ples/sequence";')
         }
         if (options?.await) injectScript('page-ssr', 'import "ples/await.css";')
+        if (options?.navigation) {
+          injectScript('page-ssr', 'import "ples/navigation.css";')
+        }
         injectScript(
           'head-inline',
           scripts({ script, awaitScript, navigationScript }, options)
