@@ -17,6 +17,7 @@ export default function ples(options?: PlesOptions): Plugin {
           awaitScript,
           navigationScript,
           style,
+          effects,
           scroll,
           sequence,
           awaitStyle,
@@ -31,7 +32,7 @@ export default function ples(options?: PlesOptions): Plugin {
           {
             tag: 'style',
             children: stylesheet(
-              { style, scroll, sequence, awaitStyle, navigationStyle },
+              { style, effects, scroll, sequence, awaitStyle, navigationStyle },
               options
             ),
             injectTo: 'head'

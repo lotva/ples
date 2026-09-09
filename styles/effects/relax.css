@@ -1,0 +1,12 @@
+[data-ples-effect='relax'] {
+  --ples-from: scaleY(0.92);
+  --ples-ease: cubic-bezier(0, 0, 0.001, 1);
+  transform-origin: var(--ples-origin, top);
+}
+
+@supports (transition-delay: attr(data-ples-hold type(<time>), 0ms)) {
+  [data-ples-effect='relax'] {
+    --ples-from: scaleY(attr(data-ples-scale type(<number>), 0.92));
+    transform-origin: attr(data-ples-origin type(*), top);
+  }
+}

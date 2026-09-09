@@ -51,6 +51,12 @@ test('astro integration injects styles and runtime inside head', () => {
     /sibling-index/,
     'sequence CSS is not imported unless the plugin option is set'
   )
+  assert.match(html, /data-ples-effect=zoom/, 'selected effect CSS is imported')
+  assert.doesNotMatch(
+    html,
+    /data-ples-effect=focus/,
+    'unselected effect CSS is not imported'
+  )
   assert.doesNotMatch(
     html,
     /ples-ready/,

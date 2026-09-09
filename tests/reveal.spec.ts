@@ -76,6 +76,7 @@ test.describe('a fresh visit', () => {
     )
     expect(functions[1], 'transform').toBe('linear')
     expect(functions[2], 'filter').toBe('linear')
+    expect(functions).toHaveLength(3)
   })
 
   test('lets a section configure its own duration from style=""', async ({

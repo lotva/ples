@@ -1,7 +1,7 @@
 import ples from 'ples/eleventy'
 
 export default function (eleventyConfig) {
-  eleventyConfig.addPlugin(ples)
+  eleventyConfig.addPlugin(ples, { effects: ['zoom'] })
 }
 
 export const config = {

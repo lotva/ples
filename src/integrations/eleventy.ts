@@ -59,6 +59,7 @@ export default function ples(
         awaitScript,
         navigationScript,
         style,
+        effects,
         scroll,
         sequence,
         awaitStyle,
@@ -68,7 +69,7 @@ export default function ples(
       return injectAssets(
         tree,
         stylesheet(
-          { style, scroll, sequence, awaitStyle, navigationStyle },
+          { style, effects, scroll, sequence, awaitStyle, navigationStyle },
           options
         ),
         scripts({ script, awaitScript, navigationScript }, options)

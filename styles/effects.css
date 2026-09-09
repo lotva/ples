@@ -23,32 +23,6 @@
   --ples-y: -20px;
 }
 
-[data-ples-effect='relax'] {
-  --ples-from: scaleY(0.92);
-  --ples-ease: cubic-bezier(0, 0, 0.001, 1);
-  transform-origin: var(--ples-origin, top);
-}
-
-[data-ples-effect='zoom'] {
-  --ples-from: scale(0.5);
-  --ples-ease: cubic-bezier(0, 0.75, 0.25, 1);
-  transform-origin: var(--ples-origin, center);
-}
-
-[data-ples-effect='screw'] {
-  --ples-from: scale(0.5) rotate(90deg);
-  --ples-ease: cubic-bezier(0, 0.75, 0.25, 1);
-  transform-origin: var(--ples-origin, center);
-}
-
-[data-ples-effect='focus'] {
-  --ples-from: translate(0, 8px);
-  --ples-filter: blur(8px);
-  --ples-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  --ples-fade-ease: var(--ples-ease);
-  --ples-duration: 800ms;
-}
-
 @supports (transition-delay: attr(data-ples-hold type(<time>), 0ms)) {
   [data-ples-effect='slide'] {
     --ples-y: attr(data-ples-up type(<length>), 20px);
@@ -64,26 +38,5 @@
 
   [data-ples-effect='slide'][data-ples-down] {
     --ples-y: calc(-1 * attr(data-ples-down type(<length>), 20px));
-  }
-
-  [data-ples-effect='relax'] {
-    --ples-from: scaleY(attr(data-ples-scale type(<number>), 0.92));
-    transform-origin: attr(data-ples-origin type(*), top);
-  }
-
-  [data-ples-effect='zoom'] {
-    --ples-from: scale(attr(data-ples-scale type(<number>), 0.5));
-    transform-origin: attr(data-ples-origin type(*), center);
-  }
-
-  [data-ples-effect='screw'] {
-    --ples-from: scale(attr(data-ples-scale type(<number>), 0.5))
-      rotate(attr(data-ples-angle type(<angle>), 90deg));
-    transform-origin: attr(data-ples-origin type(*), center);
-  }
-
-  [data-ples-effect='focus'] {
-    --ples-from: translate(0, attr(data-ples-up type(<length>), 8px));
-    --ples-filter: blur(attr(data-ples-blur type(<length>), 8px));
   }
 }

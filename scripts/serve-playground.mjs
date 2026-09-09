@@ -33,6 +33,9 @@ const STREAMED_CHUNK = `
 
 function asset(pathname) {
   if (pathname === '/ples.css') return join(DIST, 'ples.css')
+  if (/^\/effects\/(relax|zoom|screw|focus)\.css$/.test(pathname)) {
+    return join(DIST, pathname.slice(1))
+  }
   if (pathname === '/scroll.css') return join(DIST, 'scroll.css')
   if (pathname === '/sequence.css') return join(DIST, 'sequence.css')
   if (pathname === '/await.css') return join(DIST, 'await.css')

@@ -1,4 +1,7 @@
+export type PlesEffect = 'relax' | 'zoom' | 'screw' | 'focus'
+
 export type PlesOptions = {
+  effects?: readonly PlesEffect[]
   scroll?: boolean
   sequence?: boolean
   await?: boolean
@@ -7,6 +10,7 @@ export type PlesOptions = {
 
 export type PlesStyles = {
   style: string
+  effects: Record<PlesEffect, string>
   scroll: string
   sequence: string
   awaitStyle: string
@@ -21,6 +25,7 @@ export type PlesScripts = {
 
 export function stylesheet(styles: PlesStyles, options?: PlesOptions): string {
   let css = styles.style
+  for (let effect of new Set(options?.effects)) css += styles.effects[effect]
   if (options?.scroll) css += styles.scroll
   if (options?.sequence) css += styles.sequence
   if (options?.await) css += styles.awaitStyle

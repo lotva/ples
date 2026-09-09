@@ -32,11 +32,15 @@ export default defineConfig([
   },
   {
     entry: {
-      ples: 'styles/ples.css',
-      scroll: 'styles/scroll.css',
-      sequence: 'styles/sequence.css',
-      await: 'styles/await.css',
-      navigation: 'styles/navigation.css'
+      'ples': 'styles/ples.css',
+      'scroll': 'styles/scroll.css',
+      'sequence': 'styles/sequence.css',
+      'await': 'styles/await.css',
+      'navigation': 'styles/navigation.css',
+      'effects/relax': 'styles/effects/relax.css',
+      'effects/zoom': 'styles/effects/zoom.css',
+      'effects/screw': 'styles/effects/screw.css',
+      'effects/focus': 'styles/effects/focus.css'
     },
     dts: false,
     css: {

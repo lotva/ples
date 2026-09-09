@@ -9,6 +9,10 @@ const SCROLL = new URL('scroll.css', DIST)
 const SEQUENCE = new URL('sequence.css', DIST)
 const AWAIT_STYLE = new URL('await.css', DIST)
 const NAVIGATION_STYLE = new URL('navigation.css', DIST)
+const EFFECT_NAMES = ['relax', 'zoom', 'screw', 'focus']
+const EFFECT_STYLES = EFFECT_NAMES.map(
+  name => new URL(`effects/${name}.css`, DIST)
+)
 
 const SOURCEMAP_PATTERN =
   /(?:\/\/# sourceMappingURL=[^\n]*|\/\*# sourceMappingURL=[^*]*\*\/)\s*/g
@@ -26,7 +30,8 @@ export function buildHead() {
     !existsSync(SCROLL) ||
     !existsSync(SEQUENCE) ||
     !existsSync(AWAIT_STYLE) ||
-    !existsSync(NAVIGATION_STYLE)
+    !existsSync(NAVIGATION_STYLE) ||
+    EFFECT_STYLES.some(style => !existsSync(style))
   ) {
     return
   }
@@ -41,15 +46,21 @@ export function buildHead() {
   let navigationStyle = stripSourceMappingURL(
     readFileSync(NAVIGATION_STYLE, 'utf8')
   )
+  let effects = Object.fromEntries(
+    EFFECT_NAMES.map((name, index) => [
+      name,
+      stripSourceMappingURL(readFileSync(EFFECT_STYLES[index], 'utf8'))
+    ])
+  )
 
   writeFileSync(
     new URL('head.mjs', DIST),
-    `export const script = ${JSON.stringify(script)}\nexport const awaitScript = ${JSON.stringify(awaitScript)}\nexport const navigationScript = ${JSON.stringify(navigationScript)}\nexport const style = ${JSON.stringify(style)}\nexport const scroll = ${JSON.stringify(scroll)}\nexport const sequence = ${JSON.stringify(sequence)}\nexport const awaitStyle = ${JSON.stringify(awaitStyle)}\nexport const navigationStyle = ${JSON.stringify(navigationStyle)}\n`
+    `export const script = ${JSON.stringify(script)}\nexport const awaitScript = ${JSON.stringify(awaitScript)}\nexport const navigationScript = ${JSON.stringify(navigationScript)}\nexport const style = ${JSON.stringify(style)}\nexport const effects = ${JSON.stringify(effects)}\nexport const scroll = ${JSON.stringify(scroll)}\nexport const sequence = ${JSON.stringify(sequence)}\nexport const awaitStyle = ${JSON.stringify(awaitStyle)}\nexport const navigationStyle = ${JSON.stringify(navigationStyle)}\n`
   )
 
   writeFileSync(
     new URL('head.d.mts', DIST),
-    `export declare const script: string\nexport declare const awaitScript: string\nexport declare const navigationScript: string\nexport declare const style: string\nexport declare const scroll: string\nexport declare const sequence: string\nexport declare const awaitStyle: string\nexport declare const navigationStyle: string\n`
+    `export declare const script: string\nexport declare const awaitScript: string\nexport declare const navigationScript: string\nexport declare const style: string\nexport declare const effects: Record<'relax' | 'zoom' | 'screw' | 'focus', string>\nexport declare const scroll: string\nexport declare const sequence: string\nexport declare const awaitStyle: string\nexport declare const navigationStyle: string\n`
   )
 }
 

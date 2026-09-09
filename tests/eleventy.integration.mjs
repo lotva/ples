@@ -56,6 +56,12 @@ test('eleventy plugin injects styles and runtime inside head', () => {
     /sibling-index/,
     'sequence CSS is not injected unless the plugin option is set'
   )
+  assert.match(html, /data-ples-effect=zoom/, 'selected effect CSS is injected')
+  assert.doesNotMatch(
+    html,
+    /data-ples-effect=focus/,
+    'unselected effect CSS is not injected'
+  )
   assert.doesNotMatch(
     html,
     /ples-ready/,
