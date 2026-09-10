@@ -154,6 +154,9 @@ test.describe('ples/navigation', () => {
     await page.goto('/index.html')
     await expect(page.locator('#fresh')).toHaveClass(/ples-shown/)
     await expectTransition(page, 'fresh', true)
+    await page.evaluate(() => {
+      window.plesTransitioned = []
+    })
 
     await page.getByRole('link', { name: 'page two' }).click()
     await expect(page.locator('#default')).toHaveClass(/ples-shown/)
@@ -168,10 +171,8 @@ test.describe('ples/navigation', () => {
       )
     ).toBe('traverse')
 
-    await page.evaluate(() => {
-      window.plesTransitioned = []
-    })
     await page.waitForTimeout(400)
+    await expect(page.locator('html')).not.toHaveClass(/ples-instant/)
     expect(await page.evaluate(() => window.plesTransitioned)).toEqual([])
   })
 

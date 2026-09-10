@@ -14,8 +14,8 @@
       }
     }
 
-    .ples [data-ples-scroll],
-    .ples[data-ples-stream] [data-ples-scroll] {
+    .ples [data-ples][data-ples-scroll],
+    .ples[data-ples-stream] [data-ples][data-ples-scroll] {
       opacity: var(--ples-opacity, 0);
       transform: var(--ples-from, none);
       filter: var(--ples-filter, none);
@@ -34,8 +34,8 @@
     }
 
     @supports (animation-delay: attr(data-ples-hold type(<time>), 0ms)) {
-      .ples [data-ples-scroll],
-      .ples[data-ples-stream] [data-ples-scroll] {
+      .ples [data-ples][data-ples-scroll],
+      .ples[data-ples-stream] [data-ples][data-ples-scroll] {
         animation-delay: attr(
           data-ples-hold type(<time>),
           var(--ples-hold, 0ms)

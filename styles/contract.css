@@ -15,10 +15,14 @@
     filter: var(--ples-filter, none);
   }
 
+  .ples.ples-instant [data-ples] {
+    transition: none;
+  }
+
   /* No-JS fallback; animate streamed and SPA inserts */
 
   :root:not(.ples) [data-ples],
-  .ples[data-ples-stream] [data-ples] {
+  .ples[data-ples-stream] [data-ples]:not(.ples-shown) {
     opacity: 1;
     transform: none;
     filter: none;

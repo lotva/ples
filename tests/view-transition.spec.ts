@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
 
-import { skipUnlessViewTransitions } from './support.js'
+import { skipUnlessViewTransitions, trackTransitions } from './support.js'
 
 test.describe('a navigation already running its own View Transition', () => {
   test('reveals content instantly instead of animating underneath it', async ({
@@ -8,6 +8,7 @@ test.describe('a navigation already running its own View Transition', () => {
     browserName
   }) => {
     skipUnlessViewTransitions(browserName)
+    await trackTransitions(page)
     await page.goto('/index.html')
 
     await page.getByRole('link', { name: 'page view-transition' }).click()
@@ -15,5 +16,8 @@ test.describe('a navigation already running its own View Transition', () => {
     await expect(page.locator('#under-view-transition')).toHaveClass(
       /ples-shown/
     )
+    await page.waitForTimeout(400)
+    await expect(page.locator('html')).not.toHaveClass(/ples-instant/)
+    expect(await page.evaluate(() => window.plesTransitioned)).toEqual([])
   })
 })

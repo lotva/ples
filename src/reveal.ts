@@ -1,5 +1,6 @@
 const SELECTOR = '[data-ples]'
 const SHOWN_CLASS = 'ples-shown'
+const INSTANT_CLASS = 'ples-instant'
 const STREAM_ATTRIBUTE = 'data-ples-stream'
 
 function candidates(): NodeListOf<HTMLElement> {
@@ -17,6 +18,18 @@ function enableStreamMode(): void {
 function show(elements: Iterable<HTMLElement>): void {
   markShown(elements)
   enableStreamMode()
+}
+
+function showInstantly(elements: Iterable<HTMLElement>): void {
+  let root = document.documentElement
+
+  root.classList.add(INSTANT_CLASS)
+  show(elements)
+  requestAnimationFrame(() =>
+    requestAnimationFrame(() => {
+      root.classList.remove(INSTANT_CLASS)
+    })
+  )
 }
 
 function play(elements: ArrayLike<HTMLElement> & Iterable<HTMLElement>): void {
@@ -37,8 +50,11 @@ export function listen(): void {
     let elements = candidates()
 
     try {
-      if (event?.viewTransition) {
-        show(elements)
+      if (
+        event?.viewTransition ||
+        globalThis.navigation?.activation?.navigationType === 'traverse'
+      ) {
+        showInstantly(elements)
         return
       }
 
