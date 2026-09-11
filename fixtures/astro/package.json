@@ -6,7 +6,7 @@
     "build": "astro build"
   },
   "dependencies": {
-    "astro": "^7.2.10",
-    "ples": "workspace:*"
+    "@lotva/ples": "workspace:*",
+    "astro": "^7.2.10"
   }
 }

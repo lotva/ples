@@ -55,12 +55,74 @@ export function buildHead() {
 
   writeFileSync(
     new URL('head.mjs', DIST),
-    `export const script = ${JSON.stringify(script)}\nexport const awaitScript = ${JSON.stringify(awaitScript)}\nexport const navigationScript = ${JSON.stringify(navigationScript)}\nexport const style = ${JSON.stringify(style)}\nexport const effects = ${JSON.stringify(effects)}\nexport const scroll = ${JSON.stringify(scroll)}\nexport const sequence = ${JSON.stringify(sequence)}\nexport const awaitStyle = ${JSON.stringify(awaitStyle)}\nexport const navigationStyle = ${JSON.stringify(navigationStyle)}\n`
+    [
+      `import { createHash } from 'node:crypto'`,
+      `export const script = ${JSON.stringify(script)}`,
+      `export const awaitScript = ${JSON.stringify(awaitScript)}`,
+      `export const navigationScript = ${JSON.stringify(navigationScript)}`,
+      `export const style = ${JSON.stringify(style)}`,
+      `export const effects = ${JSON.stringify(effects)}`,
+      `export const scroll = ${JSON.stringify(scroll)}`,
+      `export const sequence = ${JSON.stringify(sequence)}`,
+      `export const awaitStyle = ${JSON.stringify(awaitStyle)}`,
+      `export const navigationStyle = ${JSON.stringify(navigationStyle)}`,
+      '',
+      'function sha256(source) {',
+      "  return \"'sha256-\" + createHash('sha256').update(source, 'utf8').digest('base64') + \"'\"",
+      '}',
+      '',
+      '/**',
+      ' * CSP hashes for the same inline CSS/JS the plugins emit.',
+      ' * Keep assembly in sync with `stylesheet` / `scripts` in options.ts.',
+      ' */',
+      'export function csp(options) {',
+      '  let css = style',
+      '  for (let effect of new Set(options?.effects)) css += effects[effect]',
+      '  if (options?.scroll) css += scroll',
+      '  if (options?.sequence) css += sequence',
+      '  if (options?.await) css += awaitStyle',
+      '  if (options?.navigation) css += navigationStyle',
+      '',
+      '  let js = script',
+      "  if (options?.await) js += ';' + awaitScript",
+      "  if (options?.navigation) js += ';' + navigationScript",
+      '',
+      '  return {',
+      '    scriptSrc: [sha256(js)],',
+      '    styleSrc: [sha256(css)]',
+      '  }',
+      '}',
+      ''
+    ].join('\n')
   )
 
   writeFileSync(
     new URL('head.d.mts', DIST),
-    `export declare const script: string\nexport declare const awaitScript: string\nexport declare const navigationScript: string\nexport declare const style: string\nexport declare const effects: Record<'relax' | 'zoom' | 'screw' | 'focus', string>\nexport declare const scroll: string\nexport declare const sequence: string\nexport declare const awaitStyle: string\nexport declare const navigationStyle: string\n`
+    [
+      `export declare const script: string`,
+      `export declare const awaitScript: string`,
+      `export declare const navigationScript: string`,
+      `export declare const style: string`,
+      `export declare const effects: Record<'relax' | 'zoom' | 'screw' | 'focus', string>`,
+      `export declare const scroll: string`,
+      `export declare const sequence: string`,
+      `export declare const awaitStyle: string`,
+      `export declare const navigationStyle: string`,
+      '',
+      `export type PlesCspOptions = {`,
+      `  effects?: readonly ('relax' | 'zoom' | 'screw' | 'focus')[]`,
+      `  scroll?: boolean`,
+      `  sequence?: boolean`,
+      `  await?: boolean`,
+      `  navigation?: boolean`,
+      `}`,
+      '',
+      `export declare function csp(options?: PlesCspOptions): {`,
+      `  scriptSrc: string[]`,
+      `  styleSrc: string[]`,
+      `}`,
+      ''
+    ].join('\n')
   )
 }
 

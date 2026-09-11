@@ -6,7 +6,7 @@
     "build": "vite build"
   },
   "dependencies": {
-    "ples": "workspace:*",
+    "@lotva/ples": "workspace:*",
     "vite": "^8.2.2"
   }
 }

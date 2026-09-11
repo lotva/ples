@@ -1,4 +1,4 @@
-import ples from 'ples/vite'
+import ples from '@lotva/ples/vite'
 import { defineConfig } from 'vite'
 
 export default defineConfig({

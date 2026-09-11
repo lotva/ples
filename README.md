@@ -1,5 +1,7 @@
 # Ples
 
+<img width="128" height="128" align="right" title="Ples logo" src="./.github/assets/logo.svg">
+
 A tiny, CSS-first library for coordinating reveal animations across page loads and in-app navigations — for Astro, Eleventy, Vite, and vanilla HTML. Mark an element in HTML, and Ples reveals it in the order and with the timings you set.
 
 ```html
@@ -34,7 +36,7 @@ A tiny, CSS-first library for coordinating reveal animations across page loads a
 ## Install
 
 ```bash
-npm install ples
+npm install @lotva/ples
 ```
 
 ## Setup
@@ -46,7 +48,7 @@ Put the script in `<head>` as a classic script (not `type="module"`), so it runs
 Import the strings and inline them into `<head>`:
 
 ```js
-import { script, style } from 'ples/head'
+import { script, style } from '@lotva/ples/head'
 ```
 
 <!-- prettier-ignore -->
@@ -62,7 +64,7 @@ The plugins inline the CSS and JS into `<head>` for you.
 ```js
 // astro.config.mjs
 import { defineConfig } from 'astro/config'
-import ples from 'ples/astro'
+import ples from '@lotva/ples/astro'
 
 export default defineConfig({
   integrations: [ples()]
@@ -71,7 +73,7 @@ export default defineConfig({
 
 ```js
 // eleventy.config.js
-import ples from 'ples/eleventy'
+import ples from '@lotva/ples/eleventy'
 
 export default function (eleventyConfig) {
   eleventyConfig.addPlugin(ples)
@@ -80,7 +82,7 @@ export default function (eleventyConfig) {
 
 ```js
 // vite.config.js
-import ples from 'ples/vite'
+import ples from '@lotva/ples/vite'
 import { defineConfig } from 'vite'
 
 export default defineConfig({
@@ -91,9 +93,25 @@ export default defineConfig({
 ### Files from `node_modules`
 
 ```html
-<link rel="stylesheet" href="./node_modules/ples/dist/ples.css" />
-<script src="./node_modules/ples/dist/runtime.iife.js"></script>
+<link rel="stylesheet" href="./node_modules/@lotva/ples/dist/ples.css" />
+<script src="./node_modules/@lotva/ples/dist/runtime.iife.js"></script>
 ```
+
+### Content Security Policy
+
+Inline CSS and JS need hashes (or a nonce) under a strict CSP. `csp()` returns the hashes for the same strings the plugins inline — pass the same options:
+
+```js
+import { csp } from '@lotva/ples/head'
+
+let { scriptSrc, styleSrc } = csp({ await: true, effects: ['zoom'] })
+```
+
+```http
+Content-Security-Policy: script-src 'self' 'sha256-…'; style-src 'self' 'sha256-…'
+```
+
+Use the Vite or Eleventy plugin, or the manual `<style>` / `<script>` strings from `@lotva/ples/head`. Astro links CSS through imports, so `styleSrc` may not match that build — allow those stylesheets with `'self'` (or your CDN) and still use `scriptSrc` for the inline runtime.
 
 ### Mark an element
 
@@ -127,7 +145,7 @@ Timing functions. Default is `ease-out`. Fade is separate from transform and fil
 `data-ples-up="12px"` / `data-ples-down="8px"`\
 For `slide`, vertical offset. Default is `20px` up. If both are set, down wins.
 
-`data-ples-left="10%"` / `data-ples-right="24px"`\
+`data-ples-left="10px"` / `data-ples-right="24px"`\
 For `slide`, horizontal offset. Default is none. Axes are independent of up/down. If both are set, right wins.
 
 `data-ples-opaque`\
@@ -151,7 +169,7 @@ To support browsers without typed `attr()`, also set the custom properties from 
 
 `data-ples-up="12px"` → `--ples-y: 12px`\
 `data-ples-down="8px"` → `--ples-y: -8px`\
-`data-ples-left="10%"` → `--ples-x: 10%`\
+`data-ples-left="10px"` → `--ples-x: 10px`\
 `data-ples-right="24px"` → `--ples-x: -24px`
 
 ```html
@@ -178,11 +196,34 @@ A plugin option turns the package on and inlines its CSS — and the JS too, whe
 Without a plugin, add the files from `node_modules`. CSS is `dist/<name>.css`. Await and navigation also ship `dist/<name>.iife.js` — load navigation after the core runtime.
 
 ```html
-<link rel="stylesheet" href="./node_modules/ples/dist/await.css" />
-<script src="./node_modules/ples/dist/await.iife.js"></script>
+<link rel="stylesheet" href="./node_modules/@lotva/ples/dist/await.css" />
+<script src="./node_modules/@lotva/ples/dist/await.iife.js"></script>
 ```
 
-From `ples/head`, concatenate the matching strings onto `style` and `script` as in [Setup](#setup): `awaitStyle` + `awaitScript`, `sequence`, `scroll`, `navigationStyle` + `navigationScript`.
+<details>
+<summary>Inline optional packages from <code>@lotva/ples/head</code></summary>
+
+Same as [Setup](#setup): import the extra strings and append them. CSS concatenates; IIFEs need a `;` in between.
+
+```js
+import {
+  script,
+  style,
+  effects,
+  awaitStyle,
+  awaitScript
+} from '@lotva/ples/head'
+```
+
+<!-- prettier-ignore -->
+```html
+<style>${style}${effects.zoom}${awaitStyle}</style>
+<script>${script};${awaitScript}</script>
+```
+
+`effects` is `{ relax, zoom, screw, focus }`. `sequence`, `scroll`, and `navigationStyle` go on the `<style>`; `navigationScript` on the `<script>`, after a `;`.
+
+</details>
 
 ## Extra effects
 

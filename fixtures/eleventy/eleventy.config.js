@@ -1,4 +1,4 @@
-import ples from 'ples/eleventy'
+import ples from '@lotva/ples/eleventy'
 
 export default function (eleventyConfig) {
   eleventyConfig.addPlugin(ples, { effects: ['zoom'] })

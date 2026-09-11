@@ -1,6 +1,6 @@
 {
-  "name": "ples",
-  "version": "6.0.1",
+  "name": "@lotva/ples",
+  "version": "6.1.0",
   "description": "A tiny, CSS-first library for coordinating page-load and in-app-transition reveal animations, built on pagereveal.",
   "homepage": "https://github.com/lotva/ples#readme",
   "bugs": {
@@ -57,6 +57,9 @@
     "./sequence": "./dist/sequence.css",
     "./await.css": "./dist/await.css",
     "./navigation.css": "./dist/navigation.css"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
     "build": "tsdown",
@@ -158,7 +161,7 @@
     }
   ],
   "engines": {
-    "node": ">=26"
+    "node": ">=22"
   },
   "packageManager": "pnpm@12.2.1"
 }

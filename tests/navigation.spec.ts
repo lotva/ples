@@ -96,7 +96,7 @@ test.describe('an in-app transition', () => {
   })
 })
 
-test.describe('ples/navigation', () => {
+test.describe('@lotva/ples/navigation', () => {
   test('ignores navigate=false attributes when the addon is not loaded', async ({
     page,
     browserName

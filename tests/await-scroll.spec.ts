@@ -9,7 +9,7 @@ function supportsScrollTrigger(page: Page): Promise<boolean> {
   )
 }
 
-test.describe('ples/await + ples/scroll', () => {
+test.describe('@lotva/ples/await + @lotva/ples/scroll', () => {
   test('holds scroll reveal until a lazy image is decoded', async ({
     page
   }) => {

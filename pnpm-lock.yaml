@@ -167,25 +167,25 @@ importers:
 
   fixtures/astro:
     dependencies:
+      '@lotva/ples':
+        specifier: workspace:*
+        version: link:../..
       astro:
         specifier: ^7.2.10
         version: 7.2.10(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@26.4.0)(jiti@2.7.0)(yaml@2.9.0)
-      ples:
-        specifier: workspace:*
-        version: link:../..
 
   fixtures/eleventy:
     dependencies:
       '@11ty/eleventy':
         specifier: ^3.1.6
         version: 3.1.6
-      ples:
+      '@lotva/ples':
         specifier: workspace:*
         version: link:../..
 
   fixtures/vite:
     dependencies:
-      ples:
+      '@lotva/ples':
         specifier: workspace:*
         version: link:../..
       vite:

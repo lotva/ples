@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
 
-test.describe('ples/await', () => {
+test.describe('@lotva/ples/await', () => {
   test('keeps media blocks hidden until images decode', async ({ page }) => {
     await page.goto('/await.html', { waitUntil: 'domcontentloaded' })
 

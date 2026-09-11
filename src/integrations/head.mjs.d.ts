@@ -10,3 +10,16 @@ export declare const scroll: string
 export declare const sequence: string
 export declare const awaitStyle: string
 export declare const navigationStyle: string
+
+export type PlesCspOptions = {
+  effects?: readonly ('relax' | 'zoom' | 'screw' | 'focus')[]
+  scroll?: boolean
+  sequence?: boolean
+  await?: boolean
+  navigation?: boolean
+}
+
+export declare function csp(options?: PlesCspOptions): {
+  scriptSrc: string[]
+  styleSrc: string[]
+}
