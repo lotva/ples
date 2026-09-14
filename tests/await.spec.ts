@@ -96,6 +96,30 @@ test.describe('@lotva/ples/await', () => {
     await expect(page.locator('#paired')).toHaveCSS('opacity', '1')
   })
 
+  test('does not wait for media when data-ples-await is false', async ({
+    page
+  }) => {
+    let release!: () => void
+    let held = new Promise<void>(resolve => {
+      release = resolve
+    })
+
+    await page.route(
+      url => url.pathname === '/slow.png' && url.search === '?skip',
+      async route => {
+        await held
+        await route.continue()
+      }
+    )
+
+    await page.goto('/await.html', { waitUntil: 'domcontentloaded' })
+
+    await expect(page.locator('#skip')).toHaveClass(/ples-ready/)
+    await expect(page.locator('#skip')).toHaveCSS('opacity', '1')
+
+    release()
+  })
+
   test('fails open when the awaited id is missing or cyclic', async ({
     page
   }) => {

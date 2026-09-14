@@ -48,6 +48,12 @@ function ready(element: HTMLElement): Promise<void> {
   let job = jobs.get(element)
   if (job) return job
 
+  if (element.dataset.plesAwait === 'false') {
+    element.classList.add(READY)
+    jobs.set(element, ok)
+    return ok
+  }
+
   jobs.set(element, ok)
   let target = document.getElementById(element.dataset.plesAwait ?? '')
   job = Promise.all([wait(element), target && ready(target)]).then(() => {
