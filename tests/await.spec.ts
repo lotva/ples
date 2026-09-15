@@ -129,4 +129,28 @@ test.describe('@lotva/ples/await', () => {
     await expect(page.locator('#ping')).toHaveClass(/ples-ready/)
     await expect(page.locator('#pong')).toHaveClass(/ples-ready/)
   })
+
+  test('waits for the previous block when data-ples-continue is set', async ({
+    page
+  }) => {
+    await page.goto('/await.html', { waitUntil: 'domcontentloaded' })
+
+    await expect(page.locator('#continued')).not.toHaveClass(/ples-ready/)
+    await expect(page.locator('#continued')).toHaveCSS('opacity', '0')
+
+    await expect(page.locator('#photo')).toHaveClass(/ples-ready/, {
+      timeout: 3000
+    })
+    await expect(page.locator('#continued')).toHaveClass(/ples-ready/)
+    await expect(page.locator('#continued')).toHaveCSS('opacity', '1')
+  })
+
+  test('ignores continue when data-ples-await names a target', async ({
+    page
+  }) => {
+    await page.goto('/await.html', { waitUntil: 'domcontentloaded' })
+
+    await expect(page.locator('#prefer-await')).toHaveClass(/ples-ready/)
+    await expect(page.locator('#photo')).not.toHaveClass(/ples-ready/)
+  })
 })

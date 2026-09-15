@@ -15,9 +15,15 @@ A tiny, CSS-first library for coordinating reveal animations across page loads a
 
 **MPA first.** Built for document loads. Streamed HTML and client-side mounts still reveal.
 
-**Small.** No dependencies.
+**Small.** Core is 325 B JS and 465 B CSS, brotlied. Optional packages are 2.2 kB together. No dependencies.
 
-[Guarantees](#guarantees) · [Install](#install) · [Setup](#setup) · [Basic usage](#basic-usage) · [Browser support](#browser-support) · [Optional packages](#optional-packages) · [Extra effects](#extra-effects) · [Order and timing](#order-and-timing) · [Reveal on scroll](#reveal-on-scroll) · [Reloads and in-app navigation](#reloads-and-in-app-navigation) · [Streaming and SPA](#streaming-and-spa)
+[Why](#why) · [Guarantees](#guarantees) · [Install](#install) · [Setup](#setup) · [Basic usage](#basic-usage) · [Browser support](#browser-support) · [Optional packages](#optional-packages) · [Extra effects](#extra-effects) · [Order and timing](#order-and-timing) · [Reveal on scroll](#reveal-on-scroll) · [Reloads and in-app navigation](#reloads-and-in-app-navigation) · [Streaming and SPA](#streaming-and-spa)
+
+## Why
+
+When a page loads, elements appear as the browser paints them — often out of order, with a flash. With Ples you set the order, timing, and effect in HTML.
+
+You don’t write the animation in JavaScript. The motion is CSS. A tiny script in `<head>` only picks the moment the user actually sees the document, on a first visit and on navigate or reload.
 
 ## Guarantees
 
@@ -32,6 +38,8 @@ A tiny, CSS-first library for coordinating reveal animations across page loads a
 **If the script fails.** When the script throws, every marked element is shown immediately.
 
 **You choose whether it plays on navigate and reload.** You can skip the animation on in-app navigation and on reload, or drop hold and stagger so blocks play together. A first visit always plays.
+
+**Back-forward navigations are instant.** Restoring the page from cache does not replay the animation.
 
 ## Install
 
@@ -165,7 +173,10 @@ Typed [`attr()`](https://caniuse.com/css3-attr) works in Chrome 133+, Firefox 15
 
 Where typed `attr()` isn’t supported, value attributes (`data-ples-up`, `data-ples-duration`, …) do nothing. `data-ples` and `data-ples-effect` still match.
 
-To support browsers without typed `attr()`, also set the custom properties from [Basic usage](#basic-usage) on `style=""`. Same names, except the slide offsets:
+<details>
+<summary>Support browsers without typed <code>attr()</code></summary>
+
+Set the custom properties from [Basic usage](#basic-usage) on `style=""`. Same names, except the slide offsets:
 
 `data-ples-up="12px"` → `--ples-y: 12px`\
 `data-ples-down="8px"` → `--ples-y: -8px`\
@@ -182,10 +193,13 @@ To support browsers without typed `attr()`, also set the custom properties from 
 </h1>
 ```
 
+</details>
+
 Motion is progressive enhancement. If the browser cannot animate, the page still loads as a normal document.
 
 ## Optional packages
 
+- [Extra effects](#extra-effects) — relax, zoom, screw, and focus.
 - [Await](#await) — wait for images, videos, and other blocks.
 - [Sequence](#sequence) — stagger sibling reveals.
 - [Reveal on scroll](#reveal-on-scroll) — hold a block until it enters the viewport.
@@ -193,7 +207,7 @@ Motion is progressive enhancement. If the browser cannot animate, the page still
 
 A plugin option turns the package on and inlines its CSS — and the JS too, when the package includes a script. Astro and Vite take `ples({ … })`; Eleventy takes `addPlugin(ples, { … })`.
 
-Without a plugin, add the files from `node_modules`. CSS is `dist/<name>.css`. Await and navigation also ship `dist/<name>.iife.js` — load navigation after the core runtime.
+Without a plugin, add the files from `node_modules`. CSS is `dist/<name>.css`; effects live under `dist/effects/`. Await and navigation also ship `dist/<name>.iife.js` — load navigation after the core runtime.
 
 ```html
 <link rel="stylesheet" href="./node_modules/@lotva/ples/dist/await.css" />
@@ -227,11 +241,14 @@ import {
 
 ## Extra effects
 
-Relax, zoom, screw, and focus ship with the default CSS.
+Fade and slide come with the default CSS. Relax, zoom, screw, and focus are optional.
 
 All effects are ported from Ilya Birman’s [Emerge](https://github.com/ilyabirman/Emerge).
 
-💡 Requires: typed `attr()` for `data-ples-scale`, `data-ples-origin`, `data-ples-angle`, and `data-ples-blur`. Without it, set `--ples-origin` and put scale, angle, and blur on `--ples-from` and `--ples-filter`.
+```diff
+- integrations: [ples()]
++ integrations: [ples({ effects: ['relax', 'zoom', 'screw', 'focus'] })]
+```
 
 `data-ples-effect="relax"`\
 Scale from `0.92` on the Y axis, origin `top`.
@@ -257,7 +274,34 @@ Initial angle for screw. Negative values reverse the rotation.
 `data-ples-up="12px"` and `data-ples-blur="6px"`\
 For focus, the lift and blur.
 
-💡 `--ples-filter` also works on any block without loading a focus effect.
+💡 `--ples-filter` also works on any block without loading `focus.css`. Without typed `attr()`, origin is `--ples-origin`; scale, angle, and blur go on `--ples-from` and `--ples-filter`.
+
+### Your own effect
+
+An extra effect is a selector that sets the custom properties from [Basic usage](#basic-usage). This is `focus`:
+
+```css
+[data-ples-effect='focus'] {
+  --ples-from: translate(0, 8px);
+  --ples-filter: blur(8px);
+  --ples-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ples-fade-ease: var(--ples-ease);
+  --ples-duration: 800ms;
+}
+```
+
+Pick another name and your own start values. Then `data-ples-effect="…"` uses it — no extra JS.
+
+Where typed `attr()` is supported, map attributes so markup can override the defaults — `data-ples-up` and `data-ples-blur` on focus:
+
+```css
+@supports (transition-delay: attr(data-ples-hold type(<time>), 0ms)) {
+  [data-ples-effect='focus'] {
+    --ples-from: translate(0, attr(data-ples-up type(<length>), 8px));
+    --ples-filter: blur(attr(data-ples-blur type(<length>), 8px));
+  }
+}
+```
 
 ## Order and timing
 
@@ -275,10 +319,17 @@ A block stays hidden until its images and videos are ready. Images wait to decod
 `data-ples-await="photo"`\
 Wait for `#photo` to become ready (not for its animation to finish). That target should also be `[data-ples]`. Missing or cyclic ids fail open.
 
+`data-ples-continue`\
+Wait for the previous `[data-ples]` in document order. Ignored if `data-ples-await` is set.
+
+`data-ples-await="false"`\
+Do not wait for this block’s own media.
+
 ```html
 <section data-ples>
   <img src="/hero.jpg" alt="" />
 </section>
+<section data-ples data-ples-continue>Wait for the previous block</section>
 ```
 
 Wait for a named block, then hold:
@@ -290,6 +341,35 @@ Wait for a named block, then hold:
 <section id="hero" data-ples>
   <img src="/hero.jpg" alt="" />
 </section>
+```
+
+While a block waits, it stays invisible. Put the skeleton on a parent of `[data-ples]`. Scope it to `.ples` so nothing shows when JavaScript is off:
+
+```html
+<figure class="figure">
+  <img data-ples src="/hero.jpg" alt="" width="800" height="450" />
+</figure>
+```
+
+```css
+.figure {
+  position: relative;
+
+  .ples &::before {
+    pointer-events: none;
+    content: '';
+
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+
+    background: /* your surface or shimmer */;
+  }
+
+  &:has(.ples-ready)::before {
+    content: none;
+  }
+}
 ```
 
 ### Sequence

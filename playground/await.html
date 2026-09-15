@@ -38,6 +38,27 @@
       <img src="/slow.png" width="32" height="32" alt="" />
     </section>
 
+    <section
+      id="continued"
+      data-ples
+      data-ples-continue
+      data-ples-effect="slide"
+    >
+      <h1>Continue</h1>
+      <p>Waits for the previous [data-ples], without naming its id.</p>
+    </section>
+
+    <section
+      id="prefer-await"
+      data-ples
+      data-ples-await="copy"
+      data-ples-continue
+      data-ples-effect="slide"
+    >
+      <h1>Await beats continue</h1>
+      <p>data-ples-await wins; does not wait for the previous block.</p>
+    </section>
+
     <section id="broken" data-ples data-ples-effect="slide">
       <h1>Broken image</h1>
       <img src="/missing.png" width="32" height="32" alt="" />

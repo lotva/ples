@@ -55,7 +55,14 @@ function ready(element: HTMLElement): Promise<void> {
   }
 
   jobs.set(element, ok)
-  let target = document.getElementById(element.dataset.plesAwait ?? '')
+  let named = element.dataset.plesAwait
+  let target: HTMLElement | null = named ? document.getElementById(named) : null
+  if (named == null && element.dataset.plesContinue != null) {
+    for (let node of document.querySelectorAll<HTMLElement>(SELECTOR)) {
+      if (node === element) break
+      target = node
+    }
+  }
   job = Promise.all([wait(element), target && ready(target)]).then(() => {
     element.classList.add(READY)
   })
