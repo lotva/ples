@@ -70,13 +70,6 @@ export async function expectTransition(
     .toBe(expected)
 }
 
-export function skipUnlessNavigationApi(browserName: string): void {
-  test.skip(
-    browserName !== 'chromium',
-    'Navigation API is required for this scenario'
-  )
-}
-
 export function skipUnlessViewTransitions(browserName: string): void {
   test.skip(
     browserName !== 'chromium',

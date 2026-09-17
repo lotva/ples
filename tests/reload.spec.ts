@@ -1,10 +1,6 @@
 import { expect, test } from '@playwright/test'
 
-import {
-  expectTransition,
-  skipUnlessNavigationApi,
-  trackTransitions
-} from './support.js'
+import { expectTransition, trackTransitions } from './support.js'
 
 test.describe('reloading the page', () => {
   test('animates by default, the same as a fresh visit', async ({ page }) => {
@@ -17,10 +13,8 @@ test.describe('reloading the page', () => {
   })
 
   test('stays instant once the global config turns it off', async ({
-    page,
-    browserName
+    page
   }) => {
-    skipUnlessNavigationApi(browserName)
     await page.goto('/page-config-disabled.html')
     await page.reload()
 
@@ -28,10 +22,8 @@ test.describe('reloading the page', () => {
   })
 
   test('stays instant when set through a page-wide markup attribute instead of JS', async ({
-    page,
-    browserName
+    page
   }) => {
-    skipUnlessNavigationApi(browserName)
     await page.goto('/page-reload-disabled.html')
     await page.reload()
 
@@ -39,10 +31,8 @@ test.describe('reloading the page', () => {
   })
 
   test('collapses hold and sequence stagger when together is set', async ({
-    page,
-    browserName
+    page
   }) => {
-    skipUnlessNavigationApi(browserName)
     await page.goto('/page-together.html')
     await expect(page.locator('#held')).toHaveCSS('transition-delay', '0.3s')
     await expect(page.locator('html')).not.toHaveClass(/ples-reload/)

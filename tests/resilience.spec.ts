@@ -7,7 +7,7 @@ test.describe('when the environment misbehaves', () => {
   }) => {
     test.skip(
       browserName === 'firefox',
-      'Firefox exposes pagereveal without firing it in headless runs'
+      'Without pagereveal the rAF fallback throws in <head>, before [data-ples] exists'
     )
 
     await page.addInitScript(() => {

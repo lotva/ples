@@ -1,6 +1,6 @@
 {
   "name": "@lotva/ples",
-  "version": "6.3.0",
+  "version": "6.3.1",
   "description": "A tiny, CSS-first library for coordinating page-load and in-app-transition reveal animations, built on pagereveal.",
   "homepage": "https://github.com/lotva/ples#readme",
   "bugs": {
@@ -77,7 +77,7 @@
   },
   "devDependencies": {
     "@logux/oxc-configs": "^1.1.0",
-    "@playwright/test": "^1.62.1",
+    "@playwright/test": "^1.63.0",
     "@size-limit/file": "^13.0.3",
     "@tsdown/css": "^0.22.14",
     "@types/node": "^26.1.1",
@@ -88,7 +88,7 @@
     "oxfmt": "^0.65.0",
     "oxlint": "^1.80.0",
     "oxlint-tsgolint": "^7.0.2001",
-    "playwright": "^1.62.1",
+    "playwright": "^1.63.0",
     "size-limit": "^13.0.3",
     "tsdown": "^0.22.5",
     "typescript": "^7.0.2",
@@ -153,7 +153,7 @@
     },
     {
       "path": "dist/navigation.iife.js",
-      "limit": "220 B"
+      "limit": "230 B"
     },
     {
       "path": "dist/navigation.css",
